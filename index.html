@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Velocidad Lectora Mejorado</title>
+    <title>Juego de Velocidad Lectora con Niveles</title>
     <style>
         :root {
             --primary: #4b7bec;
@@ -15,6 +15,9 @@
             --warning: #fed330;
             --danger: #fc5c65;
             --text-bg: #f9f9f9;
+            --easy: #2bcbba;
+            --medium: #fed330;
+            --hard: #fc5c65;
         }
         
         * {
@@ -75,13 +78,107 @@
             margin-bottom: 25px;
         }
         
+        .level-selector {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .level-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .level-btn.easy {
+            background-color: var(--easy);
+            color: white;
+        }
+        
+        .level-btn.medium {
+            background-color: var(--medium);
+            color: var(--dark);
+        }
+        
+        .level-btn.hard {
+            background-color: var(--hard);
+            color: white;
+        }
+        
+        .level-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            gap: 15px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--primary);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .mode-label {
+            font-weight: bold;
+        }
+        
         .text-container {
             position: relative;
             margin: 30px 0;
         }
         
         .text-display {
-            font-size: 26px;
+            font-size: 24px;
             line-height: 1.6;
             padding: 30px;
             background-color: var(--text-bg);
@@ -97,9 +194,12 @@
             z-index: 2;
         }
         
-        .text-display.stable {
-            animation: none !important;
-            transform: none !important;
+        .word-count {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 14px;
+            color: #777;
         }
         
         .controls {
@@ -184,6 +284,16 @@
             min-height: 27px;
         }
         
+        .motivational-message {
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #e8f4fc;
+            border-radius: 10px;
+            font-style: italic;
+            display: none;
+        }
+        
         .results {
             display: none;
             margin-top: 30px;
@@ -229,6 +339,31 @@
             font-size: 1.2rem;
         }
         
+        .level-progress {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .level-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ddd;
+            transition: all 0.3s;
+        }
+        
+        .level-dot.completed {
+            background-color: var(--success);
+            transform: scale(1.2);
+        }
+        
+        .level-dot.current {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+        
         .requirements {
             margin-top: 40px;
             padding: 25px;
@@ -259,26 +394,6 @@
             left: 0;
         }
         
-        .method-toggle {
-            text-align: center;
-            margin: 15px 0;
-        }
-        
-        .toggle-button {
-            background: transparent;
-            color: var(--dark);
-            border: 2px solid var(--primary);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            box-shadow: none;
-        }
-        
-        .toggle-button.active {
-            background-color: var(--primary);
-            color: white;
-        }
-        
         @media (max-width: 768px) {
             .container {
                 border-radius: 15px;
@@ -289,7 +404,7 @@
             }
             
             .text-display {
-                font-size: 22px;
+                font-size: 20px;
                 padding: 20px;
             }
             
@@ -300,13 +415,8 @@
             
             .metric {
                 min-width: 150px;
+                margin: 10px 5px;
             }
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
         }
         
         .confetti {
@@ -328,6 +438,22 @@
                 opacity: 0;
             }
         }
+        
+        .completed-animation {
+            animation: pulse 2s infinite;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success);
+            margin: 20px 0;
+            display: none;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -342,15 +468,32 @@
                 <p>Para niños de 10 años, se espera una velocidad mínima de <strong>130 palabras por minuto</strong> con buena comprensión. ¡Practica y mejora tu velocidad!</p>
             </div>
             
-            <div class="method-toggle">
-                <button id="autoToggle" class="toggle-button active">Modo Automático (Voz)</button>
-                <button id="manualToggle" class="toggle-button">Modo Manual (Temporizador)</button>
+            <div class="level-selector">
+                <button class="level-btn easy active" data-level="easy">Nivel Fácil</button>
+                <button class="level-btn medium" data-level="medium">Nivel Medio</button>
+                <button class="level-btn hard" data-level="hard">Nivel Difícil</button>
+            </div>
+            
+            <div class="mode-selector">
+                <span class="mode-label">Modo Manual</span>
+                <label class="switch">
+                    <input type="checkbox" id="modeToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="mode-label">Modo Automático</span>
+            </div>
+            
+            <div class="level-progress">
+                <div class="level-dot" data-level="1"></div>
+                <div class="level-dot" data-level="2"></div>
+                <div class="level-dot" data-level="3"></div>
             </div>
             
             <div class="text-container">
                 <div class="text-display" id="textDisplay">
-                    Presiona "Comenzar" para iniciar la prueba de lectura
+                    Selecciona un nivel y presiona "Comenzar" para iniciar la prueba de lectura
                 </div>
+                <div class="word-count" id="wordCount"></div>
             </div>
             
             <div class="progress-container">
@@ -359,11 +502,12 @@
                 </div>
                 <div class="status">
                     <span>Tiempo: <span id="timeElapsed">0</span>s</span>
-                    <span>Palabras: <span id="wordsCount">0</span></span>
+                    <span>Palabras: <span id="wordsCount">0</span>/<span id="totalWords">0</span></span>
                 </div>
             </div>
             
             <div class="mic-status" id="micStatus"></div>
+            <div class="motivational-message" id="motivationalMessage"></div>
             
             <div class="controls">
                 <button id="startButton">
@@ -372,6 +516,10 @@
                 <button id="stopButton" disabled>
                     <span>⏹️</span> Detener
                 </button>
+            </div>
+            
+            <div class="completed-animation" id="completedAnimation">
+                ¡Felicidades! Has completado todos los niveles 🎉
             </div>
             
             <div class="results" id="results">
@@ -399,6 +547,9 @@
                 <button id="retryButton">
                     <span>🔄</span> Intentar de nuevo
                 </button>
+                <button id="nextButton">
+                    <span>➡️</span> Siguiente texto
+                </button>
             </div>
             
             <div class="requirements">
@@ -414,13 +565,34 @@
     </div>
 
     <script>
-        // Textos para leer (adaptados para niños de 10 años)
-        const texts = [
-            "El perro corre en el parque grande y juega con la pelota roja que brilla bajo el sol de la tarde.",
-            "María y su hermano fueron al mercado a comprar manzanas dulces, uvas jugosas y pan recién horneado para la cena familiar.",
-            "En el bosque encantado, los pájaros cantaban melodías alegres mientras las ardillas saltaban entre las ramas de los árboles altos.",
-            "La abuela preparó una torta de chocolate deliciosa con crema blanca y fresas frescas para celebrar el cumpleaños de su nieto.",
-            "Los exploradores subieron la montaña escarpada hasta llegar a la cima desde donde podían ver todo el valle verde y el río azul."
+        // Textos para cada nivel (adaptados para niños de 9-10 años)
+        const textsByLevel = {
+            easy: [
+                "El sol brilla en el cielo azul. Los pájaros cantan en los árboles. Los niños juegan en el parque con una pelota roja. Hace un día muy bonito y todos están contentos.",
+                "María tiene un perrito pequeño que se llama Luna. A Luna le gusta correr en el jardín y jugar con su pelota favorita. Por las tardes, María y Luna pasean por el barrio.",
+                "En la granja hay muchos animales. Los pollitos pían, las vacas dan leche y los cerdos juegan en el lodo. El granjero da de comer a todos cada mañana."
+            ],
+            medium: [
+                "Los exploradores se adentraron en el bosque misterioso buscando antiguas ruinas ocultas entre la vegetación. Con sus mapas y brújulas, avanzaron cuidadosamente por el sendero cubierto de hojas secas.",
+                "La abuela preparaba cada domingo un delicioso pastel de manzana con canela. Su casa se llenaba de un aroma dulce que atraía a todos los nietos hacia la cocina, donde esperaban ansiosos el postre.",
+                "El equipo de científicos descubrió una nueva especie de mariposa en la selva tropical. Sus alas tenían colores vibrantes que nunca antes se habían documentado en ningún libro de biología."
+            ],
+            hard: [
+                "La civilización egipcia antigua desarrolló avanzados sistemas de irrigación que permitieron la agricultura en las áridas tierras cercanas al río Nilo. Construyeron impresionantes pirámides que aún hoy siguen maravillando a arqueólogos y turistas.",
+                "Los fenómenos meteorológicos extremos, como huracanes y tornados, se han intensificado debido al cambio climático global. Los investigadores analizan datos satelitales para mejorar los sistemas de alerta temprana.",
+                "La revolución industrial del siglo XVIII transformó profundamente la economía y la sociedad europea. La invención de máquinas a vapor permitió la producción en masa y cambió para siempre las relaciones laborales."
+            ]
+        };
+        
+        // Mensajes motivacionales
+        const motivationalMessages = [
+            "¡Excelente lectura! Sigue así.",
+            "¡Gran trabajo! Cada día lees mejor.",
+            "¡Increíble! Tu esfuerzo está dando resultados.",
+            "¡Fantástico! Eres un lector excepcional.",
+            "¡Maravilloso! Tu velocidad mejora constantemente.",
+            "¡Impresionante! Nada puede detenerte ahora.",
+            "¡Asombroso! Tu dedicación es admirable."
         ];
         
         // Variables del juego
@@ -433,13 +605,20 @@
         let progressInterval;
         let isManualMode = false;
         let audioContext;
+        let currentLevel = "easy";
+        let currentTextIndex = 0;
+        let completedLevels = { easy: [], medium: [], hard: [] };
         
         // Elementos DOM
         const startButton = document.getElementById('startButton');
         const stopButton = document.getElementById('stopButton');
         const retryButton = document.getElementById('retryButton');
-        const autoToggle = document.getElementById('autoToggle');
-        const manualToggle = document.getElementById('manualToggle');
+        const nextButton = document.getElementById('nextButton');
+        const modeToggle = document.getElementById('modeToggle');
+        const levelButtons = document.querySelectorAll('.level-btn');
+        const levelDots = document.querySelectorAll('.level-dot');
+        const motivationalMessage = document.getElementById('motivationalMessage');
+        const completedAnimation = document.getElementById('completedAnimation');
         
         // Inicializar la aplicación
         function initApp() {
@@ -447,8 +626,14 @@
             startButton.addEventListener('click', startTest);
             stopButton.addEventListener('click', stopTest);
             retryButton.addEventListener('click', resetTest);
-            autoToggle.addEventListener('click', () => setMode(false));
-            manualToggle.addEventListener('click', () => setMode(true));
+            nextButton.addEventListener('click', nextText);
+            modeToggle.addEventListener('change', toggleMode);
+            
+            levelButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    changeLevel(btn.dataset.level);
+                });
+            });
             
             // Inicializar audio
             try {
@@ -462,23 +647,62 @@
                 document.getElementById('micStatus').innerHTML = 
                     '<span style="color: var(--danger);">⚠️ Esta aplicación requiere HTTPS para funcionar correctamente.</span>';
             }
+            
+            // Actualizar la UI inicial
+            updateLevelProgress();
         }
         
-        // Establecer modo de operación
-        function setMode(manual) {
-            isManualMode = manual;
+        // Cambiar nivel de dificultad
+        function changeLevel(level) {
+            currentLevel = level;
+            currentTextIndex = 0;
             
-            if (manual) {
-                manualToggle.classList.add('active');
-                autoToggle.classList.remove('active');
+            // Actualizar botones de nivel
+            levelButtons.forEach(btn => {
+                if (btn.dataset.level === level) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Reiniciar la prueba
+            resetTest();
+            updateLevelProgress();
+        }
+        
+        // Cambiar modo (automático/manual)
+        function toggleMode() {
+            isManualMode = !modeToggle.checked;
+            resetTest();
+            
+            if (isManualMode) {
                 document.getElementById('micStatus').textContent = 'Modo manual: el profesor calculará el tiempo';
             } else {
-                autoToggle.classList.add('active');
-                manualToggle.classList.remove('active');
                 document.getElementById('micStatus').textContent = 'Modo automático: el sistema escuchará la lectura';
             }
+        }
+        
+        // Actualizar progreso de niveles
+        function updateLevelProgress() {
+            levelDots.forEach((dot, index) => {
+                dot.classList.remove('completed', 'current');
+                
+                if (index < currentTextIndex) {
+                    dot.classList.add('completed');
+                } else if (index === currentTextIndex) {
+                    dot.classList.add('current');
+                }
+            });
             
-            resetTest();
+            // Mostrar animación si se completaron todos los niveles
+            const allCompleted = Object.values(completedLevels).every(level => level.length === 3);
+            completedAnimation.style.display = allCompleted ? 'block' : 'none';
+            
+            if (allCompleted) {
+                playCelebrationSound();
+                createConfetti();
+            }
         }
         
         // Inicializar el reconocimiento de voz
@@ -537,14 +761,17 @@
         function startTest() {
             if (!isManualMode && !initSpeechRecognition()) return;
             
-            // Seleccionar texto aleatorio
-            const randomIndex = Math.floor(Math.random() * texts.length);
-            currentText = texts[randomIndex];
+            // Obtener texto según nivel e índice
+            currentText = textsByLevel[currentLevel][currentTextIndex];
+            const totalWords = currentText.split(/\s+/).length;
             
             // Mostrar texto
             const textDisplay = document.getElementById('textDisplay');
             textDisplay.textContent = currentText;
-            textDisplay.classList.add('stable');
+            
+            // Mostrar conteo de palabras
+            document.getElementById('totalWords').textContent = totalWords;
+            document.getElementById('wordCount').textContent = `${totalWords} palabras`;
             
             // Reiniciar variables
             wordsRead = 0;
@@ -596,8 +823,8 @@
             const progressPercent = Math.min(100, (elapsedTime / 60) * 100);
             document.getElementById('progressBar').style.width = progressPercent + '%';
             
-            // Detener automáticamente después de 70 segundos
-            if (elapsedTime > 70) {
+            // Detener automáticamente después de 120 segundos
+            if (elapsedTime > 120) {
                 stopTest();
             }
         }
@@ -607,10 +834,11 @@
             const expectedWords = currentText.toLowerCase().replace(/[.,]/g, '').split(/\s+/);
             const spokenWords = transcript.toLowerCase().replace(/[.,]/g, '').split(/\s+/);
             
-            wordsRead += spokenWords.length;
+            wordsRead = spokenWords.length;
             document.getElementById('wordsCount').textContent = wordsRead;
             
             // Verificar palabras correctas
+            correctWords = 0;
             for (let i = 0; i < spokenWords.length; i++) {
                 if (i < expectedWords.length && spokenWords[i] === expectedWords[i]) {
                     correctWords++;
@@ -638,10 +866,10 @@
             // Calcular resultados
             const timeInSeconds = (endTime - startTime) / 1000;
             const timeInMinutes = timeInSeconds / 60;
+            const totalWords = currentText.split(/\s+/).length;
             
-            // En modo manual, calcular palabras leídas basado en el tiempo
+            // En modo manual, calcular palabras leídas basado en el texto completo
             if (isManualMode) {
-                const totalWords = currentText.split(/\s+/).length;
                 wordsRead = totalWords;
                 correctWords = totalWords; // Asumimos que se leyeron todas correctamente en modo manual
             }
@@ -651,10 +879,21 @@
             
             // Evaluar rendimiento
             let evaluation = "";
-            const minimumWPM = 130;
+            let minimumWPM = 130;
+            
+            // Ajustar expectativas según nivel
+            if (currentLevel === "easy") minimumWPM = 110;
+            if (currentLevel === "hard") minimumWPM = 150;
             
             if (wordsPerMinute >= minimumWPM && accuracy >= 85) {
-                evaluation = "¡Excelente! Tu velocidad de lectura es muy buena para tu edad.";
+                evaluation = "¡Excelente! Tu velocidad de lectura es muy buena para este nivel.";
+                // Marcar texto como completado
+                if (!completedLevels[currentLevel].includes(currentTextIndex)) {
+                    completedLevels[currentLevel].push(currentTextIndex);
+                }
+                
+                // Mostrar mensaje motivacional
+                showMotivationalMessage();
             } else if (wordsPerMinute >= minimumWPM - 20 && accuracy >= 75) {
                 evaluation = "Buen trabajo. Sigue practicando para mejorar tu velocidad y precisión.";
             } else {
@@ -678,21 +917,47 @@
                 document.getElementById('micStatus').textContent = 'Prueba finalizada - ' + correctWords + ' de ' + wordsRead + ' palabras correctas';
             }
             
-            // Reproducir sonido de celebración y mostrar confeti
-            playCelebrationSound();
-            createConfetti();
+            // Actualizar progreso de niveles
+            updateLevelProgress();
+            
+            // Reproducir sonido de celebración y mostrar confeti si fue exitoso
+            if (wordsPerMinute >= minimumWPM && accuracy >= 85) {
+                playCelebrationSound();
+                createConfetti();
+            }
+        }
+        
+        // Mostrar mensaje motivacional
+        function showMotivationalMessage() {
+            const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+            motivationalMessage.textContent = randomMessage;
+            motivationalMessage.style.display = 'block';
+            
+            // Ocultar después de 5 segundos
+            setTimeout(() => {
+                motivationalMessage.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Avanzar al siguiente texto
+        function nextText() {
+            currentTextIndex = (currentTextIndex + 1) % 3;
+            resetTest();
+            updateLevelProgress();
         }
         
         // Reiniciar la prueba
         function resetTest() {
             const textDisplay = document.getElementById('textDisplay');
             textDisplay.textContent = 'Presiona "Comenzar" para iniciar la prueba';
-            textDisplay.classList.remove('stable');
             
             document.getElementById('results').style.display = 'none';
             document.getElementById('progressBar').style.width = '0%';
             document.getElementById('timeElapsed').textContent = '0';
             document.getElementById('wordsCount').textContent = '0';
+            document.getElementById('totalWords').textContent = '0';
+            document.getElementById('wordCount').textContent = '';
+            motivationalMessage.style.display = 'none';
             
             if (isManualMode) {
                 document.getElementById('micStatus').textContent = 'Modo manual: el profesor calculará el tiempo';
