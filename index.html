@@ -47,6 +47,7 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             margin: 20px;
+            position: relative;
         }
         
         header {
@@ -70,20 +71,17 @@
             padding: 30px;
         }
         
-        .info-box {
-            background-color: #e8f4fc;
-            border-left: 5px solid var(--primary);
-            padding: 20px;
-            border-radius: 8px;
+        .level-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 25px;
         }
         
-        .level-selector {
+        .level-buttons {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
         }
         
         .level-btn {
@@ -119,7 +117,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 20px 0;
+            margin: 15px 0;
             gap: 15px;
         }
         
@@ -284,24 +282,39 @@
             min-height: 27px;
         }
         
-        .motivational-message {
-            text-align: center;
-            margin: 15px 0;
-            padding: 15px;
-            background-color: #e8f4fc;
-            border-radius: 10px;
-            font-style: italic;
+        .results-modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
         
-        .results {
-            display: none;
-            margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+        .results-content {
+            background: white;
+            padding: 30px;
             border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .close-results {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
         }
         
         .result-title {
@@ -313,7 +326,7 @@
             display: inline-block;
             margin: 15px;
             padding: 20px;
-            background: white;
+            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
             border-radius: 12px;
             min-width: 200px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -339,34 +352,59 @@
             font-size: 1.2rem;
         }
         
-        .level-progress {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            gap: 10px;
+        .motivational-message {
+            text-align: center;
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #e8f4fc;
+            border-radius: 10px;
+            font-style: italic;
+            font-weight: bold;
+            color: var(--primary);
         }
         
-        .level-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: #ddd;
+        .results-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .results-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
             transition: all 0.3s;
         }
         
-        .level-dot.completed {
-            background-color: var(--success);
-            transform: scale(1.2);
+        .retry-btn {
+            background-color: var(--primary);
+            color: white;
         }
         
-        .level-dot.current {
-            background-color: var(--primary);
-            transform: scale(1.2);
+        .next-btn {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .level-info {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .level-info p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
         
         .requirements {
-            margin-top: 40px;
-            padding: 25px;
+            margin-top: 20px;
+            padding: 20px;
             background-color: #f8f9fa;
             border-radius: 15px;
         }
@@ -417,6 +455,23 @@
                 min-width: 150px;
                 margin: 10px 5px;
             }
+            
+            .level-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .level-btn {
+                width: 100%;
+            }
+            
+            .results-buttons {
+                flex-direction: column;
+            }
+            
+            .results-btn {
+                width: 100%;
+            }
         }
         
         .confetti {
@@ -464,29 +519,22 @@
         </header>
         
         <div class="content">
-            <div class="info-box">
-                <p>Para niños de 10 años, se espera una velocidad mínima de <strong>130 palabras por minuto</strong> con buena comprensión. ¡Practica y mejora tu velocidad!</p>
-            </div>
-            
-            <div class="level-selector">
-                <button class="level-btn easy active" data-level="easy">Nivel Fácil</button>
-                <button class="level-btn medium" data-level="medium">Nivel Medio</button>
-                <button class="level-btn hard" data-level="hard">Nivel Difícil</button>
-            </div>
-            
-            <div class="mode-selector">
-                <span class="mode-label">Modo Manual</span>
-                <label class="switch">
-                    <input type="checkbox" id="modeToggle">
-                    <span class="slider"></span>
-                </label>
-                <span class="mode-label">Modo Automático</span>
-            </div>
-            
-            <div class="level-progress">
-                <div class="level-dot" data-level="1"></div>
-                <div class="level-dot" data-level="2"></div>
-                <div class="level-dot" data-level="3"></div>
+            <div class="level-section">
+                <h2>Selecciona un nivel de dificultad</h2>
+                <div class="level-buttons">
+                    <button class="level-btn easy active" data-level="easy">Fácil</button>
+                    <button class="level-btn medium" data-level="medium">Medio</button>
+                    <button class="level-btn hard" data-level="hard">Difícil</button>
+                </div>
+                
+                <div class="mode-selector">
+                    <span class="mode-label">Manual</span>
+                    <label class="switch">
+                        <input type="checkbox" id="modeToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="mode-label">Automático</span>
+                </div>
             </div>
             
             <div class="text-container">
@@ -507,7 +555,6 @@
             </div>
             
             <div class="mic-status" id="micStatus"></div>
-            <div class="motivational-message" id="motivationalMessage"></div>
             
             <div class="controls">
                 <button id="startButton">
@@ -522,34 +569,8 @@
                 ¡Felicidades! Has completado todos los niveles 🎉
             </div>
             
-            <div class="results" id="results">
-                <h2 class="result-title">Resultados de la Prueba</h2>
-                
-                <div class="metric">
-                    <div class="metric-value" id="wordsPerMinute">0</div>
-                    <div class="metric-label">Palabras por minuto</div>
-                </div>
-                
-                <div class="metric">
-                    <div class="metric-value" id="accuracy">0%</div>
-                    <div class="metric-label">Precisión</div>
-                </div>
-                
-                <div class="metric">
-                    <div class="metric-value" id="readingTime">0s</div>
-                    <div class="metric-label">Tiempo de lectura</div>
-                </div>
-                
-                <div class="evaluation" id="evaluation">
-                    ¡Sigue practicando para mejorar tu velocidad!
-                </div>
-                
-                <button id="retryButton">
-                    <span>🔄</span> Intentar de nuevo
-                </button>
-                <button id="nextButton">
-                    <span>➡️</span> Siguiente texto
-                </button>
+            <div class="level-info">
+                <p>Para niños de 10 años, se espera una velocidad mínima de <strong>130 palabras por minuto</strong> con buena comprensión. ¡Practica y mejora tu velocidad!</p>
             </div>
             
             <div class="requirements">
@@ -564,23 +585,78 @@
         </div>
     </div>
 
+    <div class="results-modal" id="resultsModal">
+        <div class="results-content">
+            <button class="close-results" id="closeResults">×</button>
+            <h2 class="result-title">Resultados de la Prueba</h2>
+            
+            <div class="motivational-message" id="modalMotivation"></div>
+            
+            <div class="metric">
+                <div class="metric-value" id="modalWordsPerMinute">0</div>
+                <div class="metric-label">Palabras por minuto</div>
+            </div>
+            
+            <div class="metric">
+                <div class="metric-value" id="modalAccuracy">0%</div>
+                <div class="metric-label">Precisión</div>
+            </div>
+            
+            <div class="metric">
+                <div class="metric-value" id="modalReadingTime">0s</div>
+                <div class="metric-label">Tiempo de lectura</div>
+            </div>
+            
+            <div class="evaluation" id="modalEvaluation">
+                ¡Sigue practicando para mejorar tu velocidad!
+            </div>
+            
+            <div class="results-buttons">
+                <button class="results-btn retry-btn" id="modalRetry">
+                    <span>🔄</span> Intentar de nuevo
+                </button>
+                <button class="results-btn next-btn" id="modalNext">
+                    <span>➡️</span> Siguiente texto
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Textos para cada nivel (adaptados para niños de 9-10 años)
+        // Textos para cada nivel (9 textos por nivel)
         const textsByLevel = {
             easy: [
                 "El sol brilla en el cielo azul. Los pájaros cantan en los árboles. Los niños juegan en el parque con una pelota roja. Hace un día muy bonito y todos están contentos.",
                 "María tiene un perrito pequeño que se llama Luna. A Luna le gusta correr en el jardín y jugar con su pelota favorita. Por las tardes, María y Luna pasean por el barrio.",
-                "En la granja hay muchos animales. Los pollitos pían, las vacas dan leche y los cerdos juegan en el lodo. El granjero da de comer a todos cada mañana."
+                "En la granja hay muchos animales. Los pollitos pían, las vacas dan leche y los cerdos juegan en el lodo. El granjero da de comer a todos cada mañana.",
+                "Carlos va al colegio en autobús. Su mochila tiene libros, lápices de colores y su merienda favorita. En el recreo, juega al fútbol con sus amigos.",
+                "La abuela hace galletas de chocolate los domingos. Su casa huele muy bien cuando las galletas están en el horno. Todos los nietos esperan con ilusión probarlas.",
+                "En el mar nadan peces de muchos colores. Algunos son rojos, otros azules y los hay amarillos. Las olas suben y bajan suavemente en la orilla.",
+                "El superhéroe vuela por la ciudad salvando a las personas. Lleva una capa roja y tiene superfuerza. Todos los niños admiran sus aventuras.",
+                "En invierno hace frío y a veces nieva. Los niños se ponen abrigos gruesos, gorros y guantes. Les gusta hacer muñecos de nieve en el jardín.",
+                "La princesa vive en un castillo muy grande con torres altas. Tiene un vestido brillante y una corona de oro. Por las noches, baila en el gran salón."
             ],
             medium: [
                 "Los exploradores se adentraron en el bosque misterioso buscando antiguas ruinas ocultas entre la vegetación. Con sus mapas y brújulas, avanzaron cuidadosamente por el sendero cubierto de hojas secas.",
                 "La abuela preparaba cada domingo un delicioso pastel de manzana con canela. Su casa se llenaba de un aroma dulce que atraía a todos los nietos hacia la cocina, donde esperaban ansiosos el postre.",
-                "El equipo de científicos descubrió una nueva especie de mariposa en la selva tropical. Sus alas tenían colores vibrantes que nunca antes se habían documentado en ningún libro de biología."
+                "El equipo de científicos descubrió una nueva especie de mariposa en la selva tropical. Sus alas tenían colores vibrantes que nunca antes se habían documentado en ningún libro de biología.",
+                "El astronauta flotaba en la estación espacial observando la Tierra through la ventana circular. Contemplaba los continentes, océanos y nubes desde su privilegiada perspectiva en órbita.",
+                "La biblioteca municipal albergaba miles de libros ordenados meticulosamente en estanterías de roble. Los estudiantes acudían cada tarde a consultar enciclopedias y novelas clásicas.",
+                "El arquitecto diseñó un rascacielos innovador con fachada de cristal y sistemas de energía sostenible. Su estructura se elevaba hacia el cielo desafiando las leyes de la gravedad.",
+                "El concertista afinó su violín antes del recital en el auditorio abarrotado. Las notas musicales flotaban en el aire creando una atmósfera mágica para el público expectante.",
+                "Los periodistas investigaban el caso misterioso que tenía intrigadas a las autoridades. Revisaban documentos antiguos y entrevistaban testigos para reconstruir los hechos.",
+                "El deportista olímpico entrenaba cada madrugada en el estadio vacío. Su disciplina y dedicación eran admirables, persiguiendo el sueño de una medalla para su país."
             ],
             hard: [
                 "La civilización egipcia antigua desarrolló avanzados sistemas de irrigación que permitieron la agricultura en las áridas tierras cercanas al río Nilo. Construyeron impresionantes pirámides que aún hoy siguen maravillando a arqueólogos y turistas.",
                 "Los fenómenos meteorológicos extremos, como huracanes y tornados, se han intensificado debido al cambio climático global. Los investigadores analizan datos satelitales para mejorar los sistemas de alerta temprana.",
-                "La revolución industrial del siglo XVIII transformó profundamente la economía y la sociedad europea. La invención de máquinas a vapor permitió la producción en masa y cambió para siempre las relaciones laborales."
+                "La revolución industrial del siglo XVIII transformó profundamente la economía y la sociedad europea. La invención de máquinas a vapor permitió la producción en masa y cambió para siempre las relaciones laborales.",
+                "El sistema digestivo humano procesa los alimentos mediante complejos procesos enzimáticos y mecánicos. Cada órgano cumple una función específica en la transformación de nutrientes para su absorción.",
+                "Las teorías cuánticas revolucionaron la física tradicional al introducir conceptos probabilísticos en el comportamiento de partículas subatómicas. Este paradigma desafió los principios newtonianos establecidos.",
+                "La diplomacia internacional requiere habilidades de negociación, conocimiento cultural y comprensión de geopolítica. Los acuerdos entre naciones moldean el equilibrio de poder mundial.",
+                "La fotosíntesis es el proceso bioquímico mediante el cual las plantas transforman la energía lumínica en energía química. Este mecanismo vital sustenta la mayoría de los ecosistemas terrestres.",
+                "El renacimiento artístico floreció en Italia propagando ideas humanistas que valoraban el potencial individual y el retorno a las fuentes clásicas del conocimiento grecorromano.",
+                "La neurología cognitiva estudia las bases biológicas de procesos mentales como la memoria, atención y percepción. Las neuroimágenes permiten visualizar la actividad cerebral en tiempo real."
             ]
         };
         
@@ -606,28 +682,39 @@
         let isManualMode = false;
         let audioContext;
         let currentLevel = "easy";
-        let currentTextIndex = 0;
-        let completedLevels = { easy: [], medium: [], hard: [] };
+        let usedTexts = { easy: [], medium: [], hard: [] };
+        let playerStats = { easy: [], medium: [], hard: [] };
         
         // Elementos DOM
         const startButton = document.getElementById('startButton');
         const stopButton = document.getElementById('stopButton');
-        const retryButton = document.getElementById('retryButton');
-        const nextButton = document.getElementById('nextButton');
         const modeToggle = document.getElementById('modeToggle');
         const levelButtons = document.querySelectorAll('.level-btn');
-        const levelDots = document.querySelectorAll('.level-dot');
-        const motivationalMessage = document.getElementById('motivationalMessage');
-        const completedAnimation = document.getElementById('completedAnimation');
+        const resultsModal = document.getElementById('resultsModal');
+        const closeResults = document.getElementById('closeResults');
+        const modalRetry = document.getElementById('modalRetry');
+        const modalNext = document.getElementById('modalNext');
+        const modalMotivation = document.getElementById('modalMotivation');
         
         // Inicializar la aplicación
         function initApp() {
+            // Cargar estadísticas desde cookies
+            loadPlayerStats();
+            
             // Configurar event listeners
             startButton.addEventListener('click', startTest);
             stopButton.addEventListener('click', stopTest);
-            retryButton.addEventListener('click', resetTest);
-            nextButton.addEventListener('click', nextText);
             modeToggle.addEventListener('change', toggleMode);
+            closeResults.addEventListener('click', closeModal);
+            modalRetry.addEventListener('click', () => {
+                closeModal();
+                resetTest();
+            });
+            modalNext.addEventListener('click', () => {
+                closeModal();
+                resetTest();
+                startTest();
+            });
             
             levelButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -647,15 +734,49 @@
                 document.getElementById('micStatus').innerHTML = 
                     '<span style="color: var(--danger);">⚠️ Esta aplicación requiere HTTPS para funcionar correctamente.</span>';
             }
+        }
+        
+        // Cargar estadísticas del jugador desde cookies
+        function loadPlayerStats() {
+            const statsCookie = getCookie('readingStats');
+            if (statsCookie) {
+                playerStats = JSON.parse(statsCookie);
+            }
             
-            // Actualizar la UI inicial
-            updateLevelProgress();
+            const usedCookie = getCookie('usedTexts');
+            if (usedCookie) {
+                usedTexts = JSON.parse(usedCookie);
+            }
+        }
+        
+        // Guardar estadísticas del jugador en cookies
+        function savePlayerStats() {
+            setCookie('readingStats', JSON.stringify(playerStats), 30);
+            setCookie('usedTexts', JSON.stringify(usedTexts), 1); // Caduca en 1 día
+        }
+        
+        // Funciones de cookies
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+        
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
         }
         
         // Cambiar nivel de dificultad
         function changeLevel(level) {
             currentLevel = level;
-            currentTextIndex = 0;
             
             // Actualizar botones de nivel
             levelButtons.forEach(btn => {
@@ -668,7 +789,6 @@
             
             // Reiniciar la prueba
             resetTest();
-            updateLevelProgress();
         }
         
         // Cambiar modo (automático/manual)
@@ -683,26 +803,34 @@
             }
         }
         
-        // Actualizar progreso de niveles
-        function updateLevelProgress() {
-            levelDots.forEach((dot, index) => {
-                dot.classList.remove('completed', 'current');
-                
-                if (index < currentTextIndex) {
-                    dot.classList.add('completed');
-                } else if (index === currentTextIndex) {
-                    dot.classList.add('current');
+        // Obtener un texto aleatorio que no se haya usado
+        function getRandomText() {
+            const availableTexts = [];
+            
+            // Encontrar textos no utilizados
+            for (let i = 0; i < textsByLevel[currentLevel].length; i++) {
+                if (!usedTexts[currentLevel].includes(i)) {
+                    availableTexts.push(i);
                 }
-            });
-            
-            // Mostrar animación si se completaron todos los niveles
-            const allCompleted = Object.values(completedLevels).every(level => level.length === 3);
-            completedAnimation.style.display = allCompleted ? 'block' : 'none';
-            
-            if (allCompleted) {
-                playCelebrationSound();
-                createConfetti();
             }
+            
+            // Si todos los textos se han usado, reiniciar
+            if (availableTexts.length === 0) {
+                usedTexts[currentLevel] = [];
+                for (let i = 0; i < textsByLevel[currentLevel].length; i++) {
+                    availableTexts.push(i);
+                }
+            }
+            
+            // Seleccionar un texto aleatorio
+            const randomIndex = Math.floor(Math.random() * availableTexts.length);
+            const textIndex = availableTexts[randomIndex];
+            
+            // Marcar como usado
+            usedTexts[currentLevel].push(textIndex);
+            savePlayerStats();
+            
+            return textsByLevel[currentLevel][textIndex];
         }
         
         // Inicializar el reconocimiento de voz
@@ -722,20 +850,11 @@
             recognition.onresult = function(event) {
                 if (!isTesting || isManualMode) return;
                 
-                let interimTranscript = '';
-                let finalTranscript = '';
-                
                 for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
                     if (event.results[i].isFinal) {
-                        finalTranscript += transcript;
-                    } else {
-                        interimTranscript += transcript;
+                        const transcript = event.results[i][0].transcript;
+                        processSpeech(transcript);
                     }
-                }
-                
-                if (finalTranscript) {
-                    processSpeech(finalTranscript);
                 }
             };
             
@@ -761,8 +880,8 @@
         function startTest() {
             if (!isManualMode && !initSpeechRecognition()) return;
             
-            // Obtener texto según nivel e índice
-            currentText = textsByLevel[currentLevel][currentTextIndex];
+            // Obtener texto aleatorio no usado
+            currentText = getRandomText();
             const totalWords = currentText.split(/\s+/).length;
             
             // Mostrar texto
@@ -782,7 +901,6 @@
             // Actualizar UI
             startButton.disabled = true;
             stopButton.disabled = false;
-            document.getElementById('results').style.display = 'none';
             document.getElementById('progressBar').style.width = '0%';
             
             if (isManualMode) {
@@ -855,7 +973,7 @@
             clearInterval(progressInterval);
             
             // Detener reconocimiento de voz si está activo
-            if (!isManualMode) {
+            if (!isManualMode && recognition) {
                 try {
                     recognition.stop();
                 } catch (error) {
@@ -877,6 +995,15 @@
             const wordsPerMinute = Math.round(wordsRead / timeInMinutes);
             const accuracy = wordsRead > 0 ? Math.round((correctWords / wordsRead) * 100) : 0;
             
+            // Guardar estadísticas
+            playerStats[currentLevel].push({
+                wpm: wordsPerMinute,
+                accuracy: accuracy,
+                time: timeInSeconds,
+                date: new Date().toISOString()
+            });
+            savePlayerStats();
+            
             // Evaluar rendimiento
             let evaluation = "";
             let minimumWPM = 130;
@@ -887,25 +1014,14 @@
             
             if (wordsPerMinute >= minimumWPM && accuracy >= 85) {
                 evaluation = "¡Excelente! Tu velocidad de lectura es muy buena para este nivel.";
-                // Marcar texto como completado
-                if (!completedLevels[currentLevel].includes(currentTextIndex)) {
-                    completedLevels[currentLevel].push(currentTextIndex);
-                }
-                
-                // Mostrar mensaje motivacional
-                showMotivationalMessage();
             } else if (wordsPerMinute >= minimumWPM - 20 && accuracy >= 75) {
                 evaluation = "Buen trabajo. Sigue practicando para mejorar tu velocidad y precisión.";
             } else {
                 evaluation = "Sigue practicando. La lectura mejora con la práctica constante.";
             }
             
-            // Mostrar resultados
-            document.getElementById('wordsPerMinute').textContent = wordsPerMinute;
-            document.getElementById('accuracy').textContent = accuracy + '%';
-            document.getElementById('readingTime').textContent = timeInSeconds.toFixed(1) + 's';
-            document.getElementById('evaluation').textContent = evaluation;
-            document.getElementById('results').style.display = 'block';
+            // Mostrar resultados en el modal
+            showResultsModal(wordsPerMinute, accuracy, timeInSeconds, evaluation);
             
             // Actualizar UI
             startButton.disabled = false;
@@ -917,33 +1033,29 @@
                 document.getElementById('micStatus').textContent = 'Prueba finalizada - ' + correctWords + ' de ' + wordsRead + ' palabras correctas';
             }
             
-            // Actualizar progreso de niveles
-            updateLevelProgress();
-            
-            // Reproducir sonido de celebración y mostrar confeti si fue exitoso
+            // Reproducir sonido de celebración si fue exitoso
             if (wordsPerMinute >= minimumWPM && accuracy >= 85) {
                 playCelebrationSound();
-                createConfetti();
             }
         }
         
-        // Mostrar mensaje motivacional
-        function showMotivationalMessage() {
-            const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-            motivationalMessage.textContent = randomMessage;
-            motivationalMessage.style.display = 'block';
+        // Mostrar modal de resultados
+        function showResultsModal(wpm, accuracy, time, evaluation) {
+            document.getElementById('modalWordsPerMinute').textContent = wpm;
+            document.getElementById('modalAccuracy').textContent = accuracy + '%';
+            document.getElementById('modalReadingTime').textContent = time.toFixed(1) + 's';
+            document.getElementById('modalEvaluation').textContent = evaluation;
             
-            // Ocultar después de 5 segundos
-            setTimeout(() => {
-                motivationalMessage.style.display = 'none';
-            }, 5000);
+            // Mostrar mensaje motivacional aleatorio
+            const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+            document.getElementById('modalMotivation').textContent = randomMessage;
+            
+            resultsModal.style.display = 'flex';
         }
         
-        // Avanzar al siguiente texto
-        function nextText() {
-            currentTextIndex = (currentTextIndex + 1) % 3;
-            resetTest();
-            updateLevelProgress();
+        // Cerrar modal de resultados
+        function closeModal() {
+            resultsModal.style.display = 'none';
         }
         
         // Reiniciar la prueba
@@ -951,23 +1063,17 @@
             const textDisplay = document.getElementById('textDisplay');
             textDisplay.textContent = 'Presiona "Comenzar" para iniciar la prueba';
             
-            document.getElementById('results').style.display = 'none';
             document.getElementById('progressBar').style.width = '0%';
             document.getElementById('timeElapsed').textContent = '0';
             document.getElementById('wordsCount').textContent = '0';
             document.getElementById('totalWords').textContent = '0';
             document.getElementById('wordCount').textContent = '';
-            motivationalMessage.style.display = 'none';
             
             if (isManualMode) {
                 document.getElementById('micStatus').textContent = 'Modo manual: el profesor calculará el tiempo';
             } else {
                 document.getElementById('micStatus').textContent = 'Modo automático: el sistema escuchará la lectura';
             }
-            
-            // Limpiar confeti
-            const confettiElements = document.querySelectorAll('.confetti');
-            confettiElements.forEach(el => el.remove());
         }
         
         // Reproducir sonido de inicio
@@ -1016,23 +1122,6 @@
                 }
             } catch (e) {
                 console.error('Error reproduciendo sonido:', e);
-            }
-        }
-        
-        // Crear efecto de confeti
-        function createConfetti() {
-            const container = document.querySelector('.text-container');
-            const colors = ['#4b7bec', '#a55eea', '#fd9644', '#2bcbba', '#fed330', '#fc5c65'];
-            
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                
-                container.appendChild(confetti);
             }
         }
         
