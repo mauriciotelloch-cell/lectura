@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Velocidad Lectora</title>
+    <style>
+        :root {
+            --primary: #4b7bec;
+            --secondary: #a55eea;
+            --accent: #fd9644;
+            --light: #f0f8ff;
+            --dark: #2c3e50;
+            --success: #2bcbba;
+            --warning: #fed330;
+            --danger: #fc5c65;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px;
+        }
+        
+        header {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .info-box {
+            background-color: #e8f4fc;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .text-display {
+            font-size: 26px;
+            line-height: 1.6;
+            margin: 30px 0;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background-color: #a5b1c2;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        #startButton {
+            background-color: var(--success);
+        }
+        
+        #stopButton {
+            background-color: var(--danger);
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-bar {
+            height: 25px;
+            background-color: #f1f1f1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 15px;
+        }
+        
+        .status {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .mic-status {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 18px;
+            color: var(--primary);
+            min-height: 27px;
+        }
+        
+        .results {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-title {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .metric {
+            display: inline-block;
+            margin: 15px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+        
+        .evaluation {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .requirements {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .requirements h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .requirements ul {
+            list-style-type: none;
+        }
+        
+        .requirements li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .requirements li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .text-display {
+                font-size: 22px;
+                padding: 20px;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .metric {
+                min-width: 150px;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏎️ Carrera de Lectura 🏎️</h1>
+            <p class="subtitle">Mide y mejora tu velocidad lectora</p>
+        </header>
+        
+        <div class="content">
+            <div class="info-box">
+                <p>Para niños de 10 años, se espera una velocidad mínima de <strong>130 palabras por minuto</strong> con buena comprensión. ¡Practica y mejora tu velocidad!</p>
+            </div>
+            
+            <div class="text-display" id="textDisplay">
+                Presiona "Comenzar" para iniciar la prueba de lectura
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <div class="status">
+                    <span>Tiempo: <span id="timeElapsed">0</span>s</span>
+                    <span>Palabras: <span id="wordsCount">0</span></span>
+                </div>
+            </div>
+            
+            <div class="mic-status" id="micStatus"></div>
+            
+            <div class="controls">
+                <button id="startButton" onclick="startTest()">
+                    <span>🎤</span> Comenzar
+                </button>
+                <button id="stopButton" onclick="stopTest()" disabled>
+                    <span>⏹️</span> Detener
+                </button>
+            </div>
+            
+            <div class="results" id="results">
+                <h2 class="result-title">Resultados de la Prueba</h2>
+                
+                <div class="metric">
+                    <div class="metric-value" id="wordsPerMinute">0</div>
+                    <div class="metric-label">Palabras por minuto</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-value" id="accuracy">0%</div>
+                    <div class="metric-label">Precisión</div>
+                </div>
+                
+                <div class="evaluation" id="evaluation">
+                    ¡Sigue practicando para mejorar tu velocidad!
+                </div>
+                
+                <button onclick="resetTest()">
+                    <span>🔄</span> Intentar de nuevo
+                </button>
+            </div>
+            
+            <div class="requirements">
+                <h3>Requisitos del Sistema</h3>
+                <ul>
+                    <li>Conexión HTTPS (obligatoria para el reconocimiento de voz)</li>
+                    <li>Navegador compatible: Chrome, Edge, Firefox o Safari</li>
+                    <li>Micrófono funcionando correctamente</li>
+                    <li>Permitir el acceso al micrófono cuando el navegador lo solicite</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Textos para leer (adaptados para niños de 10 años)
+        const texts = [
+            "El perro corre en el parque grande y juega con la pelota roja que brilla bajo el sol de la tarde.",
+            "María y su hermano fueron al mercado a comprar manzanas dulces, uvas jugosas y pan recién horneado para la cena familiar.",
+            "En el bosque encantado, los pájaros cantaban melodías alegres mientras las ardillas saltaban entre las ramas de los árboles altos.",
+            "La abuela preparó una torta de chocolate deliciosa con crema blanca y fresas frescas para celebrar el cumpleaños de su nieto.",
+            "Los exploradores subieron la montaña escarpada hasta llegar a la cima desde donde podían ver todo el valle verde y el río azul."
+        ];
+        
+        // Variables del juego
+        let currentText = "";
+        let startTime, endTime;
+        let recognition;
+        let wordsRead = 0;
+        let correctWords = 0;
+        let isTesting = false;
+        let progressInterval;
+        
+        // Inicializar el reconocimiento de voz
+        function initSpeechRecognition() {
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!window.SpeechRecognition) {
+                alert("Lo sentimos, tu navegador no soporta reconocimiento de voz. Prueba con Chrome o Edge.");
+                return false;
+            }
+            
+            recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            
+            recognition.onresult = function(event) {
+                if (!isTesting) return;
+                
+                let interimTranscript = '';
+                let finalTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                if (finalTranscript) {
+                    processSpeech(finalTranscript);
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Error en reconocimiento de voz:', event.error);
+                document.getElementById('micStatus').textContent = 'Error: ' + event.error;
+            };
+            
+            return true;
+        }
+        
+        // Comenzar la prueba
+        function startTest() {
+            if (!initSpeechRecognition()) return;
+            
+            // Seleccionar texto aleatorio
+            const randomIndex = Math.floor(Math.random() * texts.length);
+            currentText = texts[randomIndex];
+            
+            // Mostrar texto
+            document.getElementById('textDisplay').textContent = currentText;
+            document.getElementById('textDisplay').classList.add('pulse');
+            
+            // Reiniciar variables
+            wordsRead = 0;
+            correctWords = 0;
+            startTime = new Date();
+            isTesting = true;
+            
+            // Actualizar UI
+            document.getElementById('startButton').disabled = true;
+            document.getElementById('stopButton').disabled = false;
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('micStatus').textContent = 'Escuchando... Habla ahora!';
+            document.getElementById('wordsCount').textContent = '0';
+            document.getElementById('timeElapsed').textContent = '0';
+            
+            // Iniciar reconocimiento de voz
+            try {
+                recognition.start();
+            } catch (error) {
+                console.error("Error al iniciar reconocimiento:", error);
+            }
+            
+            // Actualizar barra de progreso cada segundo
+            progressInterval = setInterval(() => {
+                if (!isTesting) {
+                    clearInterval(progressInterval);
+                    return;
+                }
+                
+                const elapsedTime = Math.floor((new Date() - startTime) / 1000);
+                document.getElementById('timeElapsed').textContent = elapsedTime;
+                
+                const progressPercent = Math.min(100, (elapsedTime / 60) * 100);
+                document.getElementById('progressBar').style.width = progressPercent + '%';
+                
+                // Detener automáticamente después de 70 segundos
+                if (elapsedTime > 70) {
+                    stopTest();
+                }
+            }, 1000);
+        }
+        
+        // Procesar el habla detectada
+        function processSpeech(transcript) {
+            const expectedWords = currentText.toLowerCase().split(/\s+/);
+            const spokenWords = transcript.toLowerCase().split(/\s+/);
+            
+            wordsRead += spokenWords.length;
+            document.getElementById('wordsCount').textContent = wordsRead;
+            
+            // Verificar palabras correctas
+            for (let i = 0; i < spokenWords.length; i++) {
+                if (i < expectedWords.length && spokenWords[i] === expectedWords[i]) {
+                    correctWords++;
+                }
+            }
+        }
+        
+        // Detener la prueba
+        function stopTest() {
+            if (!isTesting) return;
+            
+            isTesting = false;
+            endTime = new Date();
+            clearInterval(progressInterval);
+            
+            // Detener reconocimiento de voz
+            try {
+                recognition.stop();
+            } catch (error) {
+                console.error("Error al detener reconocimiento:", error);
+            }
+            
+            // Calcular resultados
+            const timeInSeconds = (endTime - startTime) / 1000;
+            const timeInMinutes = timeInSeconds / 60;
+            const wordsPerMinute = Math.round(wordsRead / timeInMinutes);
+            const accuracy = wordsRead > 0 ? Math.round((correctWords / wordsRead) * 100) : 0;
+            
+            // Evaluar rendimiento
+            let evaluation = "";
+            const minimumWPM = 130;
+            
+            if (wordsPerMinute >= minimumWPM && accuracy >= 85) {
+                evaluation = "¡Excelente! Tu velocidad de lectura es muy buena para tu edad.";
+            } else if (wordsPerMinute >= minimumWPM - 20 && accuracy >= 75) {
+                evaluation = "Buen trabajo. Sigue practicando para mejorar tu velocidad y precisión.";
+            } else {
+                evaluation = "Sigue practicando. La lectura mejora con la práctica constante.";
+            }
+            
+            // Mostrar resultados
+            document.getElementById('wordsPerMinute').textContent = wordsPerMinute;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('evaluation').textContent = evaluation;
+            document.getElementById('results').style.display = 'block';
+            
+            // Actualizar UI
+            document.getElementById('startButton').disabled = false;
+            document.getElementById('stopButton').disabled = true;
+            document.getElementById('micStatus').textContent = 'Prueba finalizada';
+            document.getElementById('textDisplay').classList.remove('pulse');
+        }
+        
+        // Reiniciar la prueba
+        function resetTest() {
+            document.getElementById('textDisplay').textContent = 'Presiona "Comenzar" para iniciar la prueba';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('micStatus').textContent = '';
+            document.getElementById('timeElapsed').textContent = '0';
+            document.getElementById('wordsCount').textContent = '0';
+        }
+        
+        // Inicializar la página
+        window.onload = function() {
+            // Verificar si estamos en HTTPS
+            if (location.protocol !== 'https:') {
+                document.getElementById('micStatus').innerHTML = 
+                    '<span style="color: var(--danger);">⚠️ Esta aplicación requiere HTTPS para funcionar correctamente.</span>';
+            }
+            
+            // Solicitar permiso para el micrófono al cargar la página
+            if (navigator.mediaDevices) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(function(stream) {
+                        console.log("Acceso al micrófono concedido");
+                    })
+                    .catch(function(err) {
+                        console.error("Error accediendo al micrófono:", err);
+                        document.getElementById('micStatus').textContent = 
+                            'Error: No se puede acceder al micrófono. Asegúrate de permitir el acceso.';
+                    });
+            }
+        };
+    </script>
+</body>
+</html>
