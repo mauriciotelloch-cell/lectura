@@ -80,8 +80,11 @@
         
         .level-buttons {
             display: flex;
+            justify-content: center;
             gap: 10px;
             margin: 15px 0;
+            width: 100%;
+            flex-wrap: wrap;
         }
         
         .level-btn {
@@ -91,6 +94,10 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            flex: 1;
+            min-width: 100px;
+            max-width: 150px;
+            text-align: center;
         }
         
         .level-btn.easy {
@@ -297,9 +304,9 @@
         
         .results-content {
             background: white;
-            padding: 30px;
+            padding: 20px;
             border-radius: 15px;
-            max-width: 500px;
+            max-width: 400px;
             width: 90%;
             text-align: center;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
@@ -308,75 +315,77 @@
         
         .close-results {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             color: var(--dark);
+            padding: 5px;
         }
         
         .result-title {
             color: var(--primary);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
         }
         
         .metric {
-            display: inline-block;
-            margin: 15px;
-            padding: 20px;
+            margin: 10px 0;
+            padding: 15px;
             background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
-            border-radius: 12px;
-            min-width: 200px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
         }
         
         .metric-value {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--primary);
-            margin: 10px 0;
+            margin: 5px 0;
         }
         
         .metric-label {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             color: var(--dark);
         }
         
         .evaluation {
-            margin: 25px 0;
-            padding: 20px;
+            margin: 15px 0;
+            padding: 15px;
             background-color: white;
-            border-radius: 12px;
-            font-size: 1.2rem;
+            border-radius: 10px;
+            font-size: 1rem;
         }
         
         .motivational-message {
             text-align: center;
-            margin: 15px 0;
-            padding: 15px;
+            margin: 10px 0;
+            padding: 10px;
             background-color: #e8f4fc;
-            border-radius: 10px;
+            border-radius: 8px;
             font-style: italic;
             font-weight: bold;
             color: var(--primary);
+            font-size: 0.9rem;
         }
         
         .results-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 15px;
         }
         
         .results-btn {
-            padding: 12px 25px;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
         
         .retry-btn {
@@ -387,6 +396,13 @@
         .next-btn {
             background-color: var(--success);
             color: white;
+        }
+        
+        .close-modal-btn {
+            background-color: var(--danger);
+            color: white;
+            margin-top: 10px;
+            width: 100%;
         }
         
         .level-info {
@@ -451,18 +467,15 @@
                 justify-content: center;
             }
             
-            .metric {
-                min-width: 150px;
-                margin: 10px 5px;
-            }
-            
             .level-buttons {
-                flex-direction: column;
-                width: 100%;
+                flex-direction: row;
+                flex-wrap: nowrap;
             }
             
             .level-btn {
-                width: 100%;
+                min-width: 80px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
             }
             
             .results-buttons {
@@ -471,6 +484,31 @@
             
             .results-btn {
                 width: 100%;
+            }
+            
+            .results-content {
+                padding: 15px;
+            }
+            
+            .metric-value {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .level-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .level-btn {
+                min-width: 70px;
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .mode-selector {
+                flex-direction: column;
+                gap: 8px;
             }
         }
         
@@ -520,7 +558,6 @@
         
         <div class="content">
             <div class="level-section">
-                <h2>Selecciona un nivel de dificultad</h2>
                 <div class="level-buttons">
                     <button class="level-btn easy active" data-level="easy">Fácil</button>
                     <button class="level-btn medium" data-level="medium">Medio</button>
@@ -588,7 +625,7 @@
     <div class="results-modal" id="resultsModal">
         <div class="results-content">
             <button class="close-results" id="closeResults">×</button>
-            <h2 class="result-title">Resultados de la Prueba</h2>
+            <h2 class="result-title">Resultados</h2>
             
             <div class="motivational-message" id="modalMotivation"></div>
             
@@ -619,6 +656,10 @@
                     <span>➡️</span> Siguiente texto
                 </button>
             </div>
+            
+            <button class="close-modal-btn" id="modalClose">
+                Cerrar
+            </button>
         </div>
     </div>
 
@@ -694,6 +735,7 @@
         const closeResults = document.getElementById('closeResults');
         const modalRetry = document.getElementById('modalRetry');
         const modalNext = document.getElementById('modalNext');
+        const modalClose = document.getElementById('modalClose');
         const modalMotivation = document.getElementById('modalMotivation');
         
         // Inicializar la aplicación
@@ -715,6 +757,7 @@
                 resetTest();
                 startTest();
             });
+            modalClose.addEventListener('click', closeModal);
             
             levelButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
