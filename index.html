@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Velocidad Lectora con Niveles</title>
+    <title>Juego de Velocidad Lectora</title>
     <style>
         :root {
             --primary: #4b7bec;
@@ -62,11 +62,6 @@
             margin-bottom: 10px;
         }
         
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
         .content {
             padding: 30px;
         }
@@ -120,12 +115,23 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
+        .mode-selector-container {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+            width: 100%;
+        }
+        
         .mode-selector {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 15px 0;
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 25px;
             gap: 15px;
+            width: auto;
+            flex-shrink: 0;
         }
         
         .switch {
@@ -175,6 +181,7 @@
         
         .mode-label {
             font-weight: bold;
+            white-space: nowrap;
         }
         
         .text-container {
@@ -279,6 +286,14 @@
             justify-content: space-between;
             margin-top: 10px;
             font-weight: bold;
+        }
+        
+        .score-display {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
         }
         
         .mic-status {
@@ -478,6 +493,10 @@
                 font-size: 0.9rem;
             }
             
+            .mode-selector {
+                padding: 8px 15px;
+            }
+            
             .results-buttons {
                 flex-direction: column;
             }
@@ -507,8 +526,13 @@
             }
             
             .mode-selector {
-                flex-direction: column;
+                flex-direction: row;
                 gap: 8px;
+                padding: 6px 12px;
+            }
+            
+            .mode-label {
+                font-size: 0.9rem;
             }
         }
         
@@ -552,8 +576,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🏎️ Carrera de Lectura 🏎️</h1>
-            <p class="subtitle">Mide y mejora tu velocidad lectora</p>
+            <h1>Velocidad Lectora</h1>
         </header>
         
         <div class="content">
@@ -564,14 +587,20 @@
                     <button class="level-btn hard" data-level="hard">Difícil</button>
                 </div>
                 
-                <div class="mode-selector">
-                    <span class="mode-label">Manual</span>
-                    <label class="switch">
-                        <input type="checkbox" id="modeToggle">
-                        <span class="slider"></span>
-                    </label>
-                    <span class="mode-label">Automático</span>
+                <div class="mode-selector-container">
+                    <div class="mode-selector">
+                        <span class="mode-label">Manual</span>
+                        <label class="switch">
+                            <input type="checkbox" id="modeToggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="mode-label">Automático</span>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="score-display" id="scoreDisplay">
+                Puntuación total: <span id="totalScore">0</span> puntos
             </div>
             
             <div class="text-container">
@@ -591,19 +620,19 @@
                 </div>
             </div>
             
-            <div class="mic-status" id="micStatus"></div>
+            <div class="mic-status" id="micStatus">Modo manual: el profesor calculará el tiempo</div>
             
             <div class="controls">
                 <button id="startButton">
-                    <span>🎤</span> Comenzar
+                    Comenzar
                 </button>
                 <button id="stopButton" disabled>
-                    <span>⏹️</span> Detener
+                    Detener
                 </button>
             </div>
             
             <div class="completed-animation" id="completedAnimation">
-                ¡Felicidades! Has completado todos los niveles 🎉
+                ¡Felicidades! Has completado todos los niveles
             </div>
             
             <div class="level-info">
@@ -644,16 +673,21 @@
                 <div class="metric-label">Tiempo de lectura</div>
             </div>
             
+            <div class="metric">
+                <div class="metric-value" id="modalScore">0</div>
+                <div class="metric-label">Puntos obtenidos</div>
+            </div>
+            
             <div class="evaluation" id="modalEvaluation">
                 ¡Sigue practicando para mejorar tu velocidad!
             </div>
             
             <div class="results-buttons">
                 <button class="results-btn retry-btn" id="modalRetry">
-                    <span>🔄</span> Intentar de nuevo
+                    Intentar de nuevo
                 </button>
                 <button class="results-btn next-btn" id="modalNext">
-                    <span>➡️</span> Siguiente texto
+                    Siguiente texto
                 </button>
             </div>
             
@@ -720,11 +754,12 @@
         let correctWords = 0;
         let isTesting = false;
         let progressInterval;
-        let isManualMode = false;
+        let isManualMode = true; // Modo manual por defecto
         let audioContext;
-        let currentLevel = "easy";
+        let currentLevel = "easy"; // Nivel fácil por defecto
         let usedTexts = { easy: [], medium: [], hard: [] };
         let playerStats = { easy: [], medium: [], hard: [] };
+        let totalScore = 0;
         
         // Elementos DOM
         const startButton = document.getElementById('startButton');
@@ -737,11 +772,16 @@
         const modalNext = document.getElementById('modalNext');
         const modalClose = document.getElementById('modalClose');
         const modalMotivation = document.getElementById('modalMotivation');
+        const totalScoreElement = document.getElementById('totalScore');
         
         // Inicializar la aplicación
         function initApp() {
             // Cargar estadísticas desde cookies
             loadPlayerStats();
+            
+            // Configurar valores por defecto
+            document.querySelector('.level-btn.easy').classList.add('active');
+            modeToggle.checked = false;
             
             // Configurar event listeners
             startButton.addEventListener('click', startTest);
@@ -777,6 +817,9 @@
                 document.getElementById('micStatus').innerHTML = 
                     '<span style="color: var(--danger);">⚠️ Esta aplicación requiere HTTPS para funcionar correctamente.</span>';
             }
+            
+            // Actualizar puntuación total
+            updateTotalScore();
         }
         
         // Cargar estadísticas del jugador desde cookies
@@ -790,12 +833,23 @@
             if (usedCookie) {
                 usedTexts = JSON.parse(usedCookie);
             }
+            
+            const scoreCookie = getCookie('totalScore');
+            if (scoreCookie) {
+                totalScore = parseInt(scoreCookie);
+            }
         }
         
         // Guardar estadísticas del jugador en cookies
         function savePlayerStats() {
             setCookie('readingStats', JSON.stringify(playerStats), 30);
             setCookie('usedTexts', JSON.stringify(usedTexts), 1); // Caduca en 1 día
+            setCookie('totalScore', totalScore, 30);
+        }
+        
+        // Actualizar puntuación total en la UI
+        function updateTotalScore() {
+            totalScoreElement.textContent = totalScore;
         }
         
         // Funciones de cookies
@@ -874,6 +928,23 @@
             savePlayerStats();
             
             return textsByLevel[currentLevel][textIndex];
+        }
+        
+        // Calcular puntos basados en el tiempo de lectura
+        function calculateScore(timeInSeconds, totalWords) {
+            // Tiempo objetivo: 2 palabras por segundo (120 palabras por minuto)
+            const targetTime = totalWords / 2;
+            
+            // Puntuación máxima: 10 puntos
+            const maxScore = 10;
+            
+            // Calcular puntuación (máximo 10 puntos)
+            let score = maxScore * (targetTime / timeInSeconds);
+            
+            // Asegurar que la puntuación esté entre 0 y 10
+            score = Math.max(0, Math.min(maxScore, score));
+            
+            return Math.round(score * 10) / 10; // Redondear a 1 decimal
         }
         
         // Inicializar el reconocimiento de voz
@@ -1038,14 +1109,22 @@
             const wordsPerMinute = Math.round(wordsRead / timeInMinutes);
             const accuracy = wordsRead > 0 ? Math.round((correctWords / wordsRead) * 100) : 0;
             
+            // Calcular puntos obtenidos
+            const score = calculateScore(timeInSeconds, totalWords);
+            totalScore += score;
+            
             // Guardar estadísticas
             playerStats[currentLevel].push({
                 wpm: wordsPerMinute,
                 accuracy: accuracy,
                 time: timeInSeconds,
+                score: score,
                 date: new Date().toISOString()
             });
             savePlayerStats();
+            
+            // Actualizar puntuación total en la UI
+            updateTotalScore();
             
             // Evaluar rendimiento
             let evaluation = "";
@@ -1064,7 +1143,7 @@
             }
             
             // Mostrar resultados en el modal
-            showResultsModal(wordsPerMinute, accuracy, timeInSeconds, evaluation);
+            showResultsModal(wordsPerMinute, accuracy, timeInSeconds, score, evaluation);
             
             // Actualizar UI
             startButton.disabled = false;
@@ -1083,10 +1162,11 @@
         }
         
         // Mostrar modal de resultados
-        function showResultsModal(wpm, accuracy, time, evaluation) {
+        function showResultsModal(wpm, accuracy, time, score, evaluation) {
             document.getElementById('modalWordsPerMinute').textContent = wpm;
             document.getElementById('modalAccuracy').textContent = accuracy + '%';
             document.getElementById('modalReadingTime').textContent = time.toFixed(1) + 's';
+            document.getElementById('modalScore').textContent = score;
             document.getElementById('modalEvaluation').textContent = evaluation;
             
             // Mostrar mensaje motivacional aleatorio
