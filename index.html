@@ -3,1359 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Velocidad Lectora</title>
+    <title>Juegos de Lectoescritura para Niños</title>
     <style>
-        :root {
-            --primary: #4b7bec;
-            --secondary: #a55eea;
-            --accent: #fd9644;
-            --light: #f0f8ff;
-            --dark: #2c3e50;
-            --success: #2bcbba;
-            --warning: #fed330;
-            --danger: #fc5c65;
-            --text-bg: #f9f9f9;
-            --easy: #2bcbba;
-            --medium: #fed330;
-            --hard: #fc5c65;
-        }
-        
+        /* Estilos generales */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: var(--dark);
+            background-color: #f0f9ff;
+            color: #333;
             line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
         
         .container {
             width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin: 20px;
-            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
+        /* Encabezado */
         header {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
             color: white;
-            padding: 25px;
+            padding: 20px 0;
             text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            margin-right: 10px;
         }
         
         h1 {
             font-size: 2.2rem;
-            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         
-        .content {
-            padding: 20px;
-        }
-        
-        .level-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .level-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 10px 0;
-            width: 100%;
-        }
-        
-        .level-btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 80px;
+        /* Sección de bienvenida */
+        .welcome {
             text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .level-btn.easy {
-            background-color: var(--easy);
-            color: white;
-        }
-        
-        .level-btn.medium {
-            background-color: var(--medium);
-            color: var(--dark);
-        }
-        
-        .level-btn.hard {
-            background-color: var(--hard);
-            color: white;
-        }
-        
-        .level-btn.active {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .mode-selector-container {
-            display: flex;
-            justify-content: center;
-            margin: 15px 0;
-            width: 100%;
-        }
-        
-        .mode-selector {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f0f0f0;
-            padding: 8px 16px;
-            border-radius: 25px;
-            gap: 10px;
-            width: auto;
-            flex-shrink: 0;
-        }
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--primary);
-            transition: .4s;
-            border-radius: 34px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
+            padding: 30px 0;
             background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: var(--success);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-        
-        .mode-label {
-            font-weight: bold;
-            white-space: nowrap;
-            font-size: 0.9rem;
-        }
-        
-        .text-container {
-            position: relative;
             margin: 20px 0;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
-        .text-display {
-            font-size: 22px;
-            line-height: 1.5;
-            padding: 20px;
-            background-color: var(--text-bg);
-            border-radius: 12px;
-            min-height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 2;
+        .welcome h2 {
+            color: #4e54c8;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
         }
         
-        .word-count {
-            position: absolute;
-            bottom: 8px;
-            right: 12px;
-            font-size: 12px;
-            color: #777;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        button:disabled {
-            background-color: #a5b1c2;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        #startButton {
-            background-color: var(--success);
-        }
-        
-        #stopButton {
-            background-color: var(--danger);
-        }
-        
-        .progress-container {
-            margin: 20px 0;
-        }
-        
-        .progress-bar {
-            height: 20px;
-            background-color: #f1f1f1;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            width: 0%;
-            transition: width 0.5s;
-            border-radius: 12px;
-        }
-        
-        .status {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 8px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-        
-        .score-display {
-            text-align: center;
-            margin: 8px 0;
+        .welcome p {
             font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--primary);
+            max-width: 800px;
+            margin: 0 auto;
         }
         
-        .mic-status {
+        /* Sección de juegos */
+        .games-section {
+            padding: 20px 0 40px;
+        }
+        
+        .games-section h2 {
             text-align: center;
-            margin: 12px 0;
-            font-size: 16px;
-            color: var(--primary);
-            min-height: 24px;
+            color: #4e54c8;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
         }
         
-        .results-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            box-sizing: border-box;
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
         
-        .results-content {
+        .game-card {
             background: white;
-            padding: 20px;
             border-radius: 15px;
-            max-width: 500px;
-            width: 100%;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-align: center;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-            position: relative;
-            max-height: 90vh;
-            overflow-y: auto;
         }
         
-        .close-results {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--dark);
-            padding: 5px;
-            z-index: 10;
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
         
-        .result-title {
-            color: var(--primary);
-            margin-bottom: 12px;
+        .game-icon {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            padding: 25px 0;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .game-content {
+            padding: 20px;
+        }
+        
+        .game-content h3 {
+            color: #4e54c8;
+            margin-bottom: 10px;
             font-size: 1.4rem;
         }
         
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin: 12px 0;
+        .game-content p {
+            margin-bottom: 20px;
+            color: #666;
         }
         
-        .metric {
-            padding: 10px;
-            background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 70px;
-        }
-        
-        .metric.full-width {
-            grid-column: 1 / -1;
-        }
-        
-        .metric-value {
-            font-size: 1.3rem;
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
             font-weight: bold;
-            color: var(--primary);
-            margin: 3px 0;
-        }
-        
-        .metric-label {
-            font-size: 0.75rem;
-            color: var(--dark);
-        }
-        
-        .evaluation {
-            margin: 12px 0;
-            padding: 12px;
-            background-color: white;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-        
-        .motivational-message {
-            text-align: center;
-            margin: 8px 0;
-            padding: 8px;
-            background-color: #e8f4fc;
-            border-radius: 6px;
-            font-style: italic;
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 0.85rem;
-        }
-        
-        .results-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .results-btn {
-            padding: 8px 12px;
+            transition: all 0.3s ease;
             border: none;
-            border-radius: 6px;
-            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.85rem;
         }
         
-        .retry-btn {
-            background-color: var(--primary);
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Sección de beneficios */
+        .benefits {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            padding: 40px 0;
+            border-radius: 20px;
+            margin: 30px 0;
             color: white;
         }
         
-        .next-btn {
-            background-color: var(--success);
-            color: white;
-        }
-        
-        .close-modal-btn {
-            background-color: var(--danger);
-            color: white;
-            margin-top: 8px;
-            width: 100%;
-            grid-column: 1 / -1;
-        }
-        
-        .level-info {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 12px;
+        .benefits h2 {
             text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
         }
         
-        .level-info p {
-            margin-bottom: 12px;
-            font-size: 1rem;
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
         }
         
-        .requirements {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 12px;
+        .benefit-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
         }
         
-        .requirements h3 {
-            color: var(--primary);
-            margin-bottom: 12px;
-            font-size: 1.1rem;
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
         
-        .requirements ul {
-            list-style-type: none;
+        /* Pie de página */
+        footer {
+            background: #4e54c8;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-radius: 20px 20px 0 0;
         }
         
-        .requirements li {
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-            font-size: 0.9rem;
-        }
-        
-        .requirements li:before {
-            content: "•";
-            color: var(--primary);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-        
+        /* Responsividad */
         @media (max-width: 768px) {
-            .container {
-                border-radius: 15px;
-            }
-            
             h1 {
                 font-size: 1.8rem;
             }
             
-            .text-display {
-                font-size: 19px;
-                padding: 15px;
-                min-height: 130px;
+            .welcome h2, .games-section h2, .benefits h2 {
+                font-size: 1.5rem;
             }
             
-            button {
-                width: 100%;
-                justify-content: center;
-                padding: 10px 20px;
-            }
-            
-            .level-buttons {
-                flex-direction: row;
-                flex-wrap: nowrap;
-            }
-            
-            .level-btn {
-                min-width: 70px;
-                padding: 8px 12px;
-                font-size: 0.85rem;
-            }
-            
-            .mode-selector {
-                padding: 6px 12px;
-            }
-            
-            .results-content {
-                padding: 15px;
-                max-width: 90%;
-            }
-            
-            .results-grid {
+            .games-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .metric-value {
-                font-size: 1.2rem;
-            }
-            
-            .results-buttons {
-                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
             }
         }
         
         @media (max-width: 480px) {
-            .level-buttons {
-                flex-wrap: wrap;
+            .logo {
+                flex-direction: column;
             }
             
-            .level-btn {
-                min-width: 60px;
-                padding: 6px 10px;
-                font-size: 0.8rem;
+            .logo-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
             }
             
-            .mode-selector {
-                flex-direction: row;
-                gap: 6px;
-                padding: 5px 10px;
+            .welcome, .game-card, .benefit-item {
+                border-radius: 10px;
             }
-            
-            .mode-label {
-                font-size: 0.85rem;
-            }
-            
-            .text-display {
-                font-size: 18px;
-                padding: 12px;
-                min-height: 120px;
-            }
-            
-            .results-content {
-                padding: 12px;
-            }
-            
-            .metric {
-                padding: 8px;
-                min-height: 60px;
-            }
-            
-            .metric-value {
-                font-size: 1.1rem;
-            }
-            
-            .result-title {
-                font-size: 1.2rem;
-            }
-        }
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .results-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (min-width: 1025px) {
-            .results-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (orientation: landscape) and (max-height: 500px) {
-            .results-content {
-                max-height: 85vh;
-                overflow-y: auto;
-                padding: 12px;
-            }
-            
-            .results-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 6px;
-            }
-            
-            .metric {
-                padding: 6px;
-                min-height: 60px;
-            }
-            
-            .metric-value {
-                font-size: 1.1rem;
-            }
-            
-            .metric-label {
-                font-size: 0.7rem;
-            }
-            
-            .evaluation {
-                padding: 8px;
-                font-size: 0.85rem;
-                margin: 8px 0;
-            }
-            
-            .motivational-message {
-                padding: 6px;
-                font-size: 0.8rem;
-                margin: 6px 0;
-            }
-            
-            .result-title {
-                font-size: 1.2rem;
-                margin-bottom: 8px;
-            }
-        }
-        
-        .confetti {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent);
-            opacity: 0;
-            z-index: 1;
-        }
-        
-        @keyframes confettiFall {
-            0% { 
-                transform: translateY(-80px) rotate(0deg); 
-                opacity: 1;
-            }
-            100% { 
-                transform: translateY(400px) rotate(360deg); 
-                opacity: 0;
-            }
-        }
-        
-        .completed-animation {
-            animation: pulse 2s infinite;
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: var(--success);
-            margin: 15px 0;
-            display: none;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Velocidad Lectora</h1>
-        </header>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <h1>Aventuras de Lectoescritura</h1>
+            </div>
+            <p>¡Diversión y aprendizaje para niños de 6 a 10 años!</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="welcome">
+            <h2>¡Bienvenido a nuestro mundo de juegos educativos!</h2>
+            <p>Descubre nuestros minijuegos diseñados especialmente para mejorar las habilidades de lectoescritura mientras te diviertes. Ideal para niños del primer ciclo de primaria.</p>
+        </section>
         
-        <div class="content">
-            <div class="level-section">
-                <div class="level-buttons">
-                    <button class="level-btn easy active" data-level="easy">Fácil</button>
-                    <button class="level-btn medium" data-level="medium">Medio</button>
-                    <button class="level-btn hard" data-level="hard">Difícil</button>
+        <section class="games-section">
+            <h2>Nuestros Juegos</h2>
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-icon">🎯</div>
+                    <div class="game-content">
+                        <h3>Cazadores de Letras</h3>
+                        <p>Conviértete en un cazador de letras y palabras. ¡Encuentra todas las palabras escondidas antes de que se acabe el tiempo!</p>
+                        <a href="Cazadores.html" class="btn">Jugar Ahora</a>
+                    </div>
                 </div>
                 
-                <div class="mode-selector-container">
-                    <div class="mode-selector">
-                        <span class="mode-label">Manual</span>
-                        <label class="switch">
-                            <input type="checkbox" id="modeToggle">
-                            <span class="slider"></span>
-                        </label>
-                        <span class="mode-label">Automático</span>
+                <div class="game-card">
+                    <div class="game-icon">⚡</div>
+                    <div class="game-content">
+                        <h3>Velocidad Lectora</h3>
+                        <p>Pon a prueba tu velocidad de lectura. ¡Lee lo más rápido que puedas y gana puntos por cada respuesta correcta!</p>
+                        <a href="velocidad.html" class="btn">Jugar Ahora</a>
+                    </div>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-icon">🧩</div>
+                    <div class="game-content">
+                        <h3>Próximamente</h3>
+                        <p>¡Estamos preparando más juegos divertidos para que sigas mejorando tu lectoescritura! Muy pronto disponible.</p>
+                        <a href="#" class="btn">Próximamente</a>
                     </div>
                 </div>
             </div>
-            
-            <div class="score-display" id="scoreDisplay">
-                Puntuación total: <span id="totalScore">0</span> puntos
-            </div>
-            
-            <div class="text-container">
-                <div class="text-display" id="textDisplay">
-                    Selecciona un nivel y presiona "Comenzar" para iniciar la prueba de lectura
+        </section>
+        
+        <section class="benefits">
+            <h2>¿Por qué jugar con nosotros?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎮</div>
+                    <h3>Aprendizaje Divertido</h3>
+                    <p>Combina diversión y educación en cada juego</p>
                 </div>
-                <div class="word-count" id="wordCount"></div>
-            </div>
-            
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress" id="progressBar"></div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">📈</div>
+                    <h3>Mejora Constante</h3>
+                    <p>Desarrolla habilidades de lectoescritura progresivamente</p>
                 </div>
-                <div class="status">
-                    <span>Tiempo: <span id="timeElapsed">0</span>s</span>
-                    <span>Palabras: <span id="wordsCount">0</span>/<span id="totalWords">0</span></span>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">👶</div>
+                    <h3>Para su Edad</h3>
+                    <p>Contenido apropiado para niños de 6 a 10 años</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">📱</div>
+                    <h3>Juega en Cualquier Lugar</h3>
+                    <p>Diseñado para funcionar en todos los dispositivos</p>
                 </div>
             </div>
-            
-            <div class="mic-status" id="micStatus">Modo manual: el profesor calculará el tiempo</div>
-            
-            <div class="controls">
-                <button id="startButton">
-                    Comenzar
-                </button>
-                <button id="stopButton" disabled>
-                    Detener
-                </button>
-            </div>
-            
-            <div class="completed-animation" id="completedAnimation">
-                ¡Felicidades! Has completado todos los niveles
-            </div>
-            
-            <div class="level-info">
-                <p>Para niños de 10 años, se espera una velocidad mínima de <strong>130 palabras por minuto</strong> con buena comprensión. ¡Practica y mejora tu velocidad!</p>
-            </div>
-            
-            <div class="requirements">
-                <h3>Requisitos del Sistema</h3>
-                <ul>
-                    <li>Conexión HTTPS (obligatoria para el reconocimiento de voz)</li>
-                    <li>Navegador compatible: Chrome, Edge, Firefox o Safari</li>
-                    <li>Micrófono funcionando correctamente (para modo automático)</li>
-                    <li>Permitir el acceso al micrófono cuando el navegador lo solicite</li>
-                </ul>
-            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>© 2023 Aventuras de Lectoescritura - Todos los derechos reservados</p>
+            <p>Diseñado para promover el aprendizaje en niños de 6 a 10 años</p>
         </div>
-    </div>
-
-    <div class="results-modal" id="resultsModal">
-        <div class="results-content">
-            <button class="close-results" id="closeResults">×</button>
-            <h2 class="result-title">Resultados</h2>
-            
-            <div class="motivational-message" id="modalMotivation"></div>
-            
-            <div class="results-grid">
-                <div class="metric">
-                    <div class="metric-value" id="modalWordsPerMinute">0</div>
-                    <div class="metric-label">Palabras por minuto</div>
-                </div>
-                
-                <div class="metric">
-                    <div class="metric-value" id="modalAccuracy">0%</div>
-                    <div class="metric-label">Precisión</div>
-                </div>
-                
-                <div class="metric">
-                    <div class="metric-value" id="modalReadingTime">0s</div>
-                    <div class="metric-label">Tiempo de lectura</div>
-                </div>
-                
-                <div class="metric">
-                    <div class="metric-value" id="modalScore">0</div>
-                    <div class="metric-label">Puntos obtenidos</div>
-                </div>
-            </div>
-            
-            <div class="evaluation" id="modalEvaluation">
-                ¡Sigue practicando para mejorar tu velocidad!
-            </div>
-            
-            <div class="results-buttons">
-                <button class="results-btn retry-btn" id="modalRetry">
-                    Intentar de nuevo
-                </button>
-                <button class="results-btn next-btn" id="modalNext">
-                    Siguiente texto
-                </button>
-                <button class="close-modal-btn" id="modalClose">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Textos para cada nivel (9 textos por nivel)
-        const textsByLevel = {
-            easy: [
-                "El sol brilla en el cielo azul. Los pájaros cantan en los árboles. Los niños juegan en el parque con una pelota roja. Hace un día muy bonito y todos están contentos.",
-                "María tiene un perrito pequeño que se llama Luna. A Luna le gusta correr en el jardín y jugar con su pelota favorita. Por las tardes, María y Luna pasean por el barrio.",
-                "En la granja hay muchos animales. Los pollitos pían, las vacas dan leche y los cerdos juegan en el lodo. El granjero da de comer a todos cada mañana.",
-                "Carlos va al colegio en autobús. Su mochila tiene libros, lápices de colores y su merienda favorita. En el recreo, juega al fútbol con sus amigos.",
-                "La abuela hace galletas de chocolate los domingos. Su casa huele muy bien cuando las galletas están en el horno. Todos los nietos esperan con ilusión probarlas.",
-                "En el mar nadan peces de muchos colores. Algunos son rojos, otros azules y los hay amarillos. Las olas suben y bajan suavemente en la orilla.",
-                "El superhéroe vuela por la ciudad salvando a las personas. Lleva una capa roja y tiene superfuerza. Todos los niños admiran sus aventuras.",
-                "En invierno hace frío y a veces nieva. Los niños se ponen abrigos gruesos, gorros y guantes. Les gusta hacer muñecos de nieve en el jardín.",
-                "La princesa vive en un castillo muy grande con torres altas. Tiene un vestido brillante y una corona de oro. Por las noches, baila en el gran salón."
-            ],
-            medium: [
-                "Los exploradores se adentraron en el bosque misterioso buscando antiguas ruinas ocultas entre la vegetación. Con sus mapas y brújulas, avanzaron cuidadosamente por el sendero cubierto de hojas secas.",
-                "La abuela preparaba cada domingo un delicioso pastel de manzana con canela. Su casa se llenaba de un aroma dulce que atraía a todos los nietos hacia la cocina, donde esperaban ansiosos el postre.",
-                "El equipo de científicos descubrió una nueva especie de mariposa en la selva tropical. Sus alas tenían colores vibrantes que nunca antes se habían documentado en ningún libro de biología.",
-                "El astronauta flotaba en la estación espacial observando la Tierra through la ventana circular. Contemplaba los continentes, océanos y nubes desde su privilegiada perspectiva en órbita.",
-                "La biblioteca municipal albergaba miles de libros ordenados meticulosamente en estanterías de roble. Los estudiantes acudían cada tarde to consultar enciclopedias y novelas clásicas.",
-                "El arquitecto diseñó un rascacielos innovador con fachada de cristal y sistemas de energía sostenible. Su estructura se elevaba hacia el cielo desafiando las leyes de la gravedad.",
-                "El concertista afinó su violín antes del recital en el auditorio abarrotado. Las notas musicales flotaban en el aire creando una atmósfera mágica para el público expectante.",
-                "Los periodistas investigaban el caso misterioso que tenía intrigadas a las autoridades. Revisaban documentos antiguos y entrevistaban testigos para reconstruir los hechos.",
-                "El deportista olímpico entrenaba cada madrugada en el estadio vacío. Su disciplina y dedicación eran admirables, persiguiendo el sueño de una medalla para su país."
-            ],
-            hard: [
-                "La civilización egipcia antigua desarrolló avanzados sistemas de irrigación que permitieron la agricultura en las áridas tierras cercanas al río Nilo. Construyeron impresionantes pirámides que aún hoy siguen maravillando a arqueólogos y turistas.",
-                "Los fenómenos meteorológicos extremos, como huracanes y tornados, se han intensificado debido al cambio climático global. Los investigadores analizan datos satelitales para mejorar los sistemas de alerta temprana.",
-                "La revolución industrial del siglo XVIII transformó profundamente la economía y la sociedad europea. La invención de máquinas a vapor permitió la producción en masa y cambió para siempre las relaciones laborales.",
-                "El sistema digestivo humano procesa los alimentos mediante complejos procesos enzimáticos y mecánicos. Cada órgano cumple una función específica en la transformación de nutrientes para su absorción.",
-                "Las teorías cuánticas revolucionaron la física tradicional al introducir conceptos probabilísticos en el comportamiento de partículas subatómicas. Este paradigma desafió los principios newtonianos establecidos.",
-                "La diplomacia internacional requiere habilidades de negociación, conocimiento cultural y comprensión de geopolítica. Los acuerdos entre naciones moldean el equilibrio de poder mundial.",
-                "La fotosíntesis es el proceso bioquímico mediante el cual las plantas transforman la energía lumínica en energía química. Este mecanismo vital sustenta la mayoría de los ecosistemas terrestres.",
-                "El renacimiento artístico floreció en Italia propagando ideas humanistas que valoraban el potencial individual y el retorno a las fuentes clásicas del conocimiento grecorromano.",
-                "La neurología cognitiva estudia las bases biológicas de procesos mentales como la memoria, atención y percepción. Las neuroimágenes permiten visualizar la actividad cerebral en tiempo real."
-            ]
-        };
-        
-        // Mensajes motivacionales
-        const motivationalMessages = [
-            "¡Excelente lectura! Sigue así.",
-            "¡Gran trabajo! Cada día lees mejor.",
-            "¡Increíble! Tu esfuerzo está dando resultados.",
-            "¡Fantástico! Eres un lector excepcional.",
-            "¡Maravilloso! Tu velocidad mejora constantemente.",
-            "¡Impresionante! Nada puede detenerte ahora.",
-            "¡Asombroso! Tu dedicación es admirable."
-        ];
-        
-        // Variables del juego
-        let currentText = "";
-        let startTime, endTime;
-        let recognition;
-        let wordsRead = 0;
-        let correctWords = 0;
-        let isTesting = false;
-        let progressInterval;
-        let isManualMode = true; // Modo manual por defecto
-        let audioContext;
-        let currentLevel = "easy"; // Nivel fácil por defecto
-        let usedTexts = { easy: [], medium: [], hard: [] };
-        let playerStats = { easy: [], medium: [], hard: [] };
-        let totalScore = 0;
-        
-        // Elementos DOM
-        const startButton = document.getElementById('startButton');
-        const stopButton = document.getElementById('stopButton');
-        const modeToggle = document.getElementById('modeToggle');
-        const levelButtons = document.querySelectorAll('.level-btn');
-        const resultsModal = document.getElementById('resultsModal');
-        const closeResults = document.getElementById('closeResults');
-        const modalRetry = document.getElementById('modalRetry');
-        const modalNext = document.getElementById('modalNext');
-        const modalClose = document.getElementById('modalClose');
-        const modalMotivation = document.getElementById('modalMotivation');
-        const totalScoreElement = document.getElementById('totalScore');
-        
-        // Inicializar la aplicación
-        function initApp() {
-            // Cargar estadísticas desde cookies
-            loadPlayerStats();
-            
-            // Configurar valores por defecto
-            document.querySelector('.level-btn.easy').classList.add('active');
-            modeToggle.checked = false;
-            
-            // Configurar event listeners
-            startButton.addEventListener('click', startTest);
-            stopButton.addEventListener('click', stopTest);
-            modeToggle.addEventListener('change', toggleMode);
-            closeResults.addEventListener('click', closeModal);
-            modalRetry.addEventListener('click', () => {
-                closeModal();
-                resetTest();
-            });
-            modalNext.addEventListener('click', () => {
-                closeModal();
-                resetTest();
-                startTest();
-            });
-            modalClose.addEventListener('click', closeModal);
-            
-            levelButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    changeLevel(btn.dataset.level);
-                });
-            });
-            
-            // Inicializar audio
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            } catch (e) {
-                console.error('Web Audio API no es compatible con este navegador:', e);
-            }
-            
-            // Verificar si estamos en HTTPS
-            if (location.protocol !== 'https:') {
-                document.getElementById('micStatus').innerHTML = 
-                    '<span style="color: var(--danger);">⚠️ Esta aplicación requiere HTTPS para funcionar correctamente.</span>';
-            }
-            
-            // Actualizar puntuación total
-            updateTotalScore();
-        }
-        
-        // Cargar estadísticas del jugador desde cookies
-        function loadPlayerStats() {
-            const statsCookie = getCookie('readingStats');
-            if (statsCookie) {
-                playerStats = JSON.parse(statsCookie);
-            }
-            
-            const usedCookie = getCookie('usedTexts');
-            if (usedCookie) {
-                usedTexts = JSON.parse(usedCookie);
-            }
-            
-            const scoreCookie = getCookie('totalScore');
-            if (scoreCookie) {
-                totalScore = parseInt(scoreCookie);
-            }
-        }
-        
-        // Guardar estadísticas del jugador en cookies
-        function savePlayerStats() {
-            setCookie('readingStats', JSON.stringify(playerStats), 30);
-            setCookie('usedTexts', JSON.stringify(usedTexts), 1); // Caduca en 1 día
-            setCookie('totalScore', totalScore, 30);
-        }
-        
-        // Actualizar puntuación total en la UI
-        function updateTotalScore() {
-            totalScoreElement.textContent = totalScore;
-        }
-        
-        // Funciones de cookies
-        function setCookie(name, value, days) {
-            const date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            const expires = "expires=" + date.toUTCString();
-            document.cookie = name + "=" + value + ";" + expires + ";path=/";
-        }
-        
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for(let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
-        }
-        
-        // Cambiar nivel de dificultad
-        function changeLevel(level) {
-            currentLevel = level;
-            
-            // Actualizar botones de nivel
-            levelButtons.forEach(btn => {
-                if (btn.dataset.level === level) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            // Reiniciar la prueba
-            resetTest();
-        }
-        
-        // Cambiar modo (automático/manual)
-        function toggleMode() {
-            isManualMode = !modeToggle.checked;
-            resetTest();
-            
-            if (isManualMode) {
-                document.getElementById('micStatus').textContent = 'Modo manual: el profesor calculará el tiempo';
-            } else {
-                document.getElementById('micStatus').textContent = 'Modo automático: el sistema escuchará la lectura';
-            }
-        }
-        
-        // Obtener un texto aleatorio que no se haya usado
-        function getRandomText() {
-            const availableTexts = [];
-            
-            // Encontrar textos no utilizados
-            for (let i = 0; i < textsByLevel[currentLevel].length; i++) {
-                if (!usedTexts[currentLevel].includes(i)) {
-                    availableTexts.push(i);
-                }
-            }
-            
-            // Si todos los textos se han usado, reiniciar
-            if (availableTexts.length === 0) {
-                usedTexts[currentLevel] = [];
-                for (let i = 0; i < textsByLevel[currentLevel].length; i++) {
-                    availableTexts.push(i);
-                }
-            }
-            
-            // Seleccionar un texto aleatorio
-            const randomIndex = Math.floor(Math.random() * availableTexts.length);
-            const textIndex = availableTexts[randomIndex];
-            
-            // Marcar como usado
-            usedTexts[currentLevel].push(textIndex);
-            savePlayerStats();
-            
-            return textsByLevel[currentLevel][textIndex];
-        }
-        
-        // Calcular puntos basados en el tiempo de lectura
-        function calculateScore(timeInSeconds, totalWords) {
-            // Tiempo objetivo: 2 palabras por segundo (120 palabras por minuto)
-            const targetTime = totalWords / 2;
-            
-            // Puntuación máxima: 10 puntos
-            const maxScore = 10;
-            
-            // Calcular puntuación (máximo 10 puntos)
-            let score = maxScore * (targetTime / timeInSeconds);
-            
-            // Asegurar que la puntuación esté entre 0 y 10
-            score = Math.max(0, Math.min(maxScore, score));
-            
-            return Math.round(score * 10) / 10; // Redondear a 1 decimal
-        }
-        
-        // Inicializar el reconocimiento de voz
-        function initSpeechRecognition() {
-            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            
-            if (!window.SpeechRecognition) {
-                alert("Lo sentimos, tu navegador no soporta reconocimiento de voz. Prueba con Chrome o Edge.");
-                return false;
-            }
-            
-            recognition = new SpeechRecognition();
-            recognition.lang = 'es-ES';
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            
-            recognition.onresult = function(event) {
-                if (!isTesting || isManualMode) return;
-                
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    if (event.results[i].isFinal) {
-                        const transcript = event.results[i][0].transcript;
-                        processSpeech(transcript);
-                    }
-                }
-            };
-            
-            recognition.onerror = function(event) {
-                console.error('Error en reconocimiento de voz:', event.error);
-                document.getElementById('micStatus').textContent = 'Error: ' + event.error;
-            };
-            
-            recognition.onend = function() {
-                if (isTesting && !isManualMode) {
-                    try {
-                        recognition.start();
-                    } catch (e) {
-                        console.error('Error al reiniciar reconocimiento:', e);
-                    }
-                }
-            };
-            
-            return true;
-        }
-        
-        // Comenzar la prueba
-        function startTest() {
-            if (!isManualMode && !initSpeechRecognition()) return;
-            
-            // Obtener texto aleatorio no usado
-            currentText = getRandomText();
-            const totalWords = currentText.split(/\s+/).length;
-            
-            // Mostrar texto
-            const textDisplay = document.getElementById('textDisplay');
-            textDisplay.textContent = currentText;
-            
-            // Mostrar conteo de palabras
-            document.getElementById('totalWords').textContent = totalWords;
-            document.getElementById('wordCount').textContent = `${totalWords} palabras`;
-            
-            // Reiniciar variables
-            wordsRead = 0;
-            correctWords = 0;
-            startTime = new Date();
-            isTesting = true;
-            
-            // Actualizar UI
-            startButton.disabled = true;
-            stopButton.disabled = false;
-            document.getElementById('progressBar').style.width = '0%';
-            
-            if (isManualMode) {
-                document.getElementById('micStatus').textContent = '¡Empieza a leer ahora!';
-            } else {
-                document.getElementById('micStatus').textContent = 'Escuchando... Habla ahora!';
-            }
-            
-            document.getElementById('wordsCount').textContent = '0';
-            document.getElementById('timeElapsed').textContent = '0';
-            
-            // Reproducir sonido de inicio
-            playStartSound();
-            
-            // Iniciar reconocimiento de voz si está en modo automático
-            if (!isManualMode) {
-                try {
-                    recognition.start();
-                } catch (error) {
-                    console.error("Error al iniciar reconocimiento:", error);
-                }
-            }
-            
-            // Actualizar barra de progreso cada segundo
-            progressInterval = setInterval(updateProgress, 1000);
-        }
-        
-        // Actualizar progreso
-        function updateProgress() {
-            if (!isTesting) {
-                clearInterval(progressInterval);
-                return;
-            }
-            
-            const elapsedTime = Math.floor((new Date() - startTime) / 1000);
-            document.getElementById('timeElapsed').textContent = elapsedTime;
-            
-            const progressPercent = Math.min(100, (elapsedTime / 60) * 100);
-            document.getElementById('progressBar').style.width = progressPercent + '%';
-            
-            // Detener automáticamente después de 120 segundos
-            if (elapsedTime > 120) {
-                stopTest();
-            }
-        }
-        
-        // Procesar el habla detectada
-        function processSpeech(transcript) {
-            const expectedWords = currentText.toLowerCase().replace(/[.,]/g, '').split(/\s+/);
-            const spokenWords = transcript.toLowerCase().replace(/[.,]/g, '').split(/\s+/);
-            
-            wordsRead = spokenWords.length;
-            document.getElementById('wordsCount').textContent = wordsRead;
-            
-            // Verificar palabras correctas
-            correctWords = 0;
-            for (let i = 0; i < spokenWords.length; i++) {
-                if (i < expectedWords.length && spokenWords[i] === expectedWords[i]) {
-                    correctWords++;
-                }
-            }
-        }
-        
-        // Detener la prueba
-        function stopTest() {
-            if (!isTesting) return;
-            
-            isTesting = false;
-            endTime = new Date();
-            clearInterval(progressInterval);
-            
-            // Detener reconocimiento de voz si está activo
-            if (!isManualMode && recognition) {
-                try {
-                    recognition.stop();
-                } catch (error) {
-                    console.error("Error al detener reconocimiento:", error);
-                }
-            }
-            
-            // Calcular resultados
-            const timeInSeconds = (endTime - startTime) / 1000;
-            const timeInMinutes = timeInSeconds / 60;
-            const totalWords = currentText.split(/\s+/).length;
-            
-            // En modo manual, calcular palabras leídas basado en el texto completo
-            if (isManualMode) {
-                wordsRead = totalWords;
-                correctWords = totalWords; // Asumimos que se leyeron todas correctamente en modo manual
-            }
-            
-            const wordsPerMinute = Math.round(wordsRead / timeInMinutes);
-            const accuracy = wordsRead > 0 ? Math.round((correctWords / wordsRead) * 100) : 0;
-            
-            // Calcular puntos obtenidos
-            const score = calculateScore(timeInSeconds, totalWords);
-            totalScore += score;
-            
-            // Guardar estadísticas
-            playerStats[currentLevel].push({
-                wpm: wordsPerMinute,
-                accuracy: accuracy,
-                time: timeInSeconds,
-                score: score,
-                date: new Date().toISOString()
-            });
-            savePlayerStats();
-            
-            // Actualizar puntuación total en la UI
-            updateTotalScore();
-            
-            // Evaluar rendimiento
-            let evaluation = "";
-            let minimumWPM = 130;
-            
-            // Ajustar expectativas según nivel
-            if (currentLevel === "easy") minimumWPM = 110;
-            if (currentLevel === "hard") minimumWPM = 150;
-            
-            if (wordsPerMinute >= minimumWPM && accuracy >= 85) {
-                evaluation = "¡Excelente! Tu velocidad de lectura es muy buena para este nivel.";
-            } else if (wordsPerMinute >= minimumWPM - 20 && accuracy >= 75) {
-                evaluation = "Buen trabajo. Sigue practicando para mejorar tu velocidad y precisión.";
-            } else {
-                evaluation = "Sigue practicando. La lectura mejora con la práctica constante.";
-            }
-            
-            // Mostrar resultados en el modal
-            showResultsModal(wordsPerMinute, accuracy, timeInSeconds, score, evaluation);
-            
-            // Actualizar UI
-            startButton.disabled = false;
-            stopButton.disabled = true;
-            
-            if (isManualMode) {
-                document.getElementById('micStatus').textContent = 'Prueba finalizada';
-            } else {
-                document.getElementById('micStatus').textContent = 'Prueba finalizada - ' + correctWords + ' de ' + wordsRead + ' palabras correctas';
-            }
-            
-            // Reproducir sonido de celebración si fue exitoso
-            if (wordsPerMinute >= minimumWPM && accuracy >= 85) {
-                playCelebrationSound();
-            }
-        }
-        
-        // Mostrar modal de resultados
-        function showResultsModal(wpm, accuracy, time, score, evaluation) {
-            document.getElementById('modalWordsPerMinute').textContent = wpm;
-            document.getElementById('modalAccuracy').textContent = accuracy + '%';
-            document.getElementById('modalReadingTime').textContent = time.toFixed(1) + 's';
-            document.getElementById('modalScore').textContent = score;
-            document.getElementById('modalEvaluation').textContent = evaluation;
-            
-            // Mostrar mensaje motivacional aleatorio
-            const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-            document.getElementById('modalMotivation').textContent = randomMessage;
-            
-            resultsModal.style.display = 'flex';
-        }
-        
-        // Cerrar modal de resultados
-        function closeModal() {
-            resultsModal.style.display = 'none';
-        }
-        
-        // Reiniciar la prueba
-        function resetTest() {
-            const textDisplay = document.getElementById('textDisplay');
-            textDisplay.textContent = 'Presiona "Comenzar" para iniciar la prueba';
-            
-            document.getElementById('progressBar').style.width = '0%';
-            document.getElementById('timeElapsed').textContent = '0';
-            document.getElementById('wordsCount').textContent = '0';
-            document.getElementById('totalWords').textContent = '0';
-            document.getElementById('wordCount').textContent = '';
-            
-            if (isManualMode) {
-                document.getElementById('micStatus').textContent = 'Modo manual: el profesor calculará el tiempo';
-            } else {
-                document.getElementById('micStatus').textContent = 'Modo automático: el sistema escuchará la lectura';
-            }
-        }
-        
-        // Reproducir sonido de inicio
-        function playStartSound() {
-            if (!audioContext) return;
-            
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime + 0.1);
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-            
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.3);
-        }
-        
-        // Reproducir sonido de celebración
-        function playCelebrationSound() {
-            if (!audioContext) return;
-            
-            try {
-                // Crear una secuencia de tonos celebratorios
-                const times = [0, 0.1, 0.2, 0.3, 0.4, 0.5];
-                const frequencies = [523.25, 587.33, 659.25, 698.46, 783.99, 880];
-                
-                for (let i = 0; i < times.length; i++) {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.setValueAtTime(frequencies[i], audioContext.currentTime);
-                    
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime + times[i]);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + times[i] + 0.1);
-                    
-                    oscillator.start(audioContext.currentTime + times[i]);
-                    oscillator.stop(audioContext.currentTime + times[i] + 0.1);
-                }
-            } catch (e) {
-                console.error('Error reproduciendo sonido:', e);
-            }
-        }
-        
-        // Inicializar cuando se carga la página
-        window.addEventListener('load', initApp);
-    </script>
+    </footer>
 </body>
 </html>
