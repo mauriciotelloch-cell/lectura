@@ -58,41 +58,40 @@
         }
         
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
         }
         
         .content {
-            padding: 30px;
+            padding: 20px;
         }
         
         .level-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .level-buttons {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 10px 0;
             width: 100%;
-            flex-wrap: wrap;
         }
         
         .level-btn {
-            padding: 12px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             flex: 1;
-            min-width: 100px;
-            max-width: 150px;
+            min-width: 80px;
             text-align: center;
+            font-size: 0.9rem;
         }
         
         .level-btn.easy {
@@ -127,9 +126,9 @@
             justify-content: center;
             align-items: center;
             background: #f0f0f0;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 25px;
-            gap: 15px;
+            gap: 10px;
             width: auto;
             flex-shrink: 0;
         }
@@ -137,8 +136,8 @@
         .switch {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 30px;
+            width: 50px;
+            height: 26px;
         }
         
         .switch input {
@@ -162,8 +161,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 22px;
-            width: 22px;
+            height: 18px;
+            width: 18px;
             left: 4px;
             bottom: 4px;
             background-color: white;
@@ -176,31 +175,32 @@
         }
         
         input:checked + .slider:before {
-            transform: translateX(30px);
+            transform: translateX(24px);
         }
         
         .mode-label {
             font-weight: bold;
             white-space: nowrap;
+            font-size: 0.9rem;
         }
         
         .text-container {
             position: relative;
-            margin: 30px 0;
+            margin: 20px 0;
         }
         
         .text-display {
-            font-size: 24px;
-            line-height: 1.6;
-            padding: 30px;
+            font-size: 22px;
+            line-height: 1.5;
+            padding: 20px;
             background-color: var(--text-bg);
-            border-radius: 15px;
-            min-height: 180px;
+            border-radius: 12px;
+            min-height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
             position: relative;
             z-index: 2;
@@ -208,17 +208,17 @@
         
         .word-count {
             position: absolute;
-            bottom: 10px;
-            right: 15px;
-            font-size: 14px;
+            bottom: 8px;
+            right: 12px;
+            font-size: 12px;
             color: #777;
         }
         
         .controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 12px;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
         
@@ -226,14 +226,14 @@
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
@@ -262,15 +262,15 @@
         }
         
         .progress-container {
-            margin: 30px 0;
+            margin: 20px 0;
         }
         
         .progress-bar {
-            height: 25px;
+            height: 20px;
             background-color: #f1f1f1;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
         }
         
         .progress {
@@ -278,30 +278,31 @@
             background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
             width: 0%;
             transition: width 0.5s;
-            border-radius: 15px;
+            border-radius: 12px;
         }
         
         .status {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: 8px;
             font-weight: bold;
+            font-size: 0.9rem;
         }
         
         .score-display {
             text-align: center;
-            margin: 10px 0;
-            font-size: 1.2rem;
+            margin: 8px 0;
+            font-size: 1.1rem;
             font-weight: bold;
             color: var(--primary);
         }
         
         .mic-status {
             text-align: center;
-            margin: 15px 0;
-            font-size: 18px;
+            margin: 12px 0;
+            font-size: 16px;
             color: var(--primary);
-            min-height: 27px;
+            min-height: 24px;
         }
         
         .results-modal {
@@ -315,17 +316,21 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
         }
         
         .results-content {
             background: white;
             padding: 20px;
             border-radius: 15px;
-            max-width: 400px;
-            width: 90%;
+            max-width: 500px;
+            width: 100%;
             text-align: center;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .close-results {
@@ -338,69 +343,85 @@
             cursor: pointer;
             color: var(--dark);
             padding: 5px;
+            z-index: 10;
         }
         
         .result-title {
             color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 12px 0;
         }
         
         .metric {
-            margin: 10px 0;
-            padding: 15px;
+            padding: 10px;
             background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 70px;
+        }
+        
+        .metric.full-width {
+            grid-column: 1 / -1;
         }
         
         .metric-value {
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--primary);
-            margin: 5px 0;
+            margin: 3px 0;
         }
         
         .metric-label {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             color: var(--dark);
         }
         
         .evaluation {
-            margin: 15px 0;
-            padding: 15px;
+            margin: 12px 0;
+            padding: 12px;
             background-color: white;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
         }
         
         .motivational-message {
             text-align: center;
-            margin: 10px 0;
-            padding: 10px;
+            margin: 8px 0;
+            padding: 8px;
             background-color: #e8f4fc;
-            border-radius: 8px;
+            border-radius: 6px;
             font-style: italic;
             font-weight: bold;
             color: var(--primary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .results-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 12px;
         }
         
         .results-btn {
-            padding: 10px 15px;
+            padding: 8px 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .retry-btn {
@@ -416,33 +437,35 @@
         .close-modal-btn {
             background-color: var(--danger);
             color: white;
-            margin-top: 10px;
+            margin-top: 8px;
             width: 100%;
+            grid-column: 1 / -1;
         }
         
         .level-info {
-            margin-top: 40px;
-            padding: 25px;
+            margin-top: 30px;
+            padding: 20px;
             background-color: #f8f9fa;
-            border-radius: 15px;
+            border-radius: 12px;
             text-align: center;
         }
         
         .level-info p {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+            margin-bottom: 12px;
+            font-size: 1rem;
         }
         
         .requirements {
             margin-top: 20px;
-            padding: 20px;
+            padding: 15px;
             background-color: #f8f9fa;
-            border-radius: 15px;
+            border-radius: 12px;
         }
         
         .requirements h3 {
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
         }
         
         .requirements ul {
@@ -450,9 +473,10 @@
         }
         
         .requirements li {
-            margin-bottom: 10px;
-            padding-left: 25px;
+            margin-bottom: 8px;
+            padding-left: 20px;
             position: relative;
+            font-size: 0.9rem;
         }
         
         .requirements li:before {
@@ -469,17 +493,19 @@
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .text-display {
-                font-size: 20px;
-                padding: 20px;
+                font-size: 19px;
+                padding: 15px;
+                min-height: 130px;
             }
             
             button {
                 width: 100%;
                 justify-content: center;
+                padding: 10px 20px;
             }
             
             .level-buttons {
@@ -488,29 +514,30 @@
             }
             
             .level-btn {
-                min-width: 80px;
-                padding: 10px 15px;
-                font-size: 0.9rem;
+                min-width: 70px;
+                padding: 8px 12px;
+                font-size: 0.85rem;
             }
             
             .mode-selector {
-                padding: 8px 15px;
-            }
-            
-            .results-buttons {
-                flex-direction: column;
-            }
-            
-            .results-btn {
-                width: 100%;
+                padding: 6px 12px;
             }
             
             .results-content {
                 padding: 15px;
+                max-width: 90%;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
             }
             
             .metric-value {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+            }
+            
+            .results-buttons {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -520,26 +547,104 @@
             }
             
             .level-btn {
-                min-width: 70px;
-                padding: 8px 12px;
+                min-width: 60px;
+                padding: 6px 10px;
                 font-size: 0.8rem;
             }
             
             .mode-selector {
                 flex-direction: row;
-                gap: 8px;
-                padding: 6px 12px;
+                gap: 6px;
+                padding: 5px 10px;
             }
             
             .mode-label {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
+            }
+            
+            .text-display {
+                font-size: 18px;
+                padding: 12px;
+                min-height: 120px;
+            }
+            
+            .results-content {
+                padding: 12px;
+            }
+            
+            .metric {
+                padding: 8px;
+                min-height: 60px;
+            }
+            
+            .metric-value {
+                font-size: 1.1rem;
+            }
+            
+            .result-title {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (orientation: landscape) and (max-height: 500px) {
+            .results-content {
+                max-height: 85vh;
+                overflow-y: auto;
+                padding: 12px;
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            
+            .metric {
+                padding: 6px;
+                min-height: 60px;
+            }
+            
+            .metric-value {
+                font-size: 1.1rem;
+            }
+            
+            .metric-label {
+                font-size: 0.7rem;
+            }
+            
+            .evaluation {
+                padding: 8px;
+                font-size: 0.85rem;
+                margin: 8px 0;
+            }
+            
+            .motivational-message {
+                padding: 6px;
+                font-size: 0.8rem;
+                margin: 6px 0;
+            }
+            
+            .result-title {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
             }
         }
         
         .confetti {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background-color: var(--accent);
             opacity: 0;
             z-index: 1;
@@ -547,11 +652,11 @@
         
         @keyframes confettiFall {
             0% { 
-                transform: translateY(-100px) rotate(0deg); 
+                transform: translateY(-80px) rotate(0deg); 
                 opacity: 1;
             }
             100% { 
-                transform: translateY(500px) rotate(360deg); 
+                transform: translateY(400px) rotate(360deg); 
                 opacity: 0;
             }
         }
@@ -559,10 +664,10 @@
         .completed-animation {
             animation: pulse 2s infinite;
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--success);
-            margin: 20px 0;
+            margin: 15px 0;
             display: none;
         }
         
@@ -658,24 +763,26 @@
             
             <div class="motivational-message" id="modalMotivation"></div>
             
-            <div class="metric">
-                <div class="metric-value" id="modalWordsPerMinute">0</div>
-                <div class="metric-label">Palabras por minuto</div>
-            </div>
-            
-            <div class="metric">
-                <div class="metric-value" id="modalAccuracy">0%</div>
-                <div class="metric-label">Precisión</div>
-            </div>
-            
-            <div class="metric">
-                <div class="metric-value" id="modalReadingTime">0s</div>
-                <div class="metric-label">Tiempo de lectura</div>
-            </div>
-            
-            <div class="metric">
-                <div class="metric-value" id="modalScore">0</div>
-                <div class="metric-label">Puntos obtenidos</div>
+            <div class="results-grid">
+                <div class="metric">
+                    <div class="metric-value" id="modalWordsPerMinute">0</div>
+                    <div class="metric-label">Palabras por minuto</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-value" id="modalAccuracy">0%</div>
+                    <div class="metric-label">Precisión</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-value" id="modalReadingTime">0s</div>
+                    <div class="metric-label">Tiempo de lectura</div>
+                </div>
+                
+                <div class="metric">
+                    <div class="metric-value" id="modalScore">0</div>
+                    <div class="metric-label">Puntos obtenidos</div>
+                </div>
             </div>
             
             <div class="evaluation" id="modalEvaluation">
@@ -689,11 +796,10 @@
                 <button class="results-btn next-btn" id="modalNext">
                     Siguiente texto
                 </button>
+                <button class="close-modal-btn" id="modalClose">
+                    Cerrar
+                </button>
             </div>
-            
-            <button class="close-modal-btn" id="modalClose">
-                Cerrar
-            </button>
         </div>
     </div>
 
@@ -716,7 +822,7 @@
                 "La abuela preparaba cada domingo un delicioso pastel de manzana con canela. Su casa se llenaba de un aroma dulce que atraía a todos los nietos hacia la cocina, donde esperaban ansiosos el postre.",
                 "El equipo de científicos descubrió una nueva especie de mariposa en la selva tropical. Sus alas tenían colores vibrantes que nunca antes se habían documentado en ningún libro de biología.",
                 "El astronauta flotaba en la estación espacial observando la Tierra through la ventana circular. Contemplaba los continentes, océanos y nubes desde su privilegiada perspectiva en órbita.",
-                "La biblioteca municipal albergaba miles de libros ordenados meticulosamente en estanterías de roble. Los estudiantes acudían cada tarde a consultar enciclopedias y novelas clásicas.",
+                "La biblioteca municipal albergaba miles de libros ordenados meticulosamente en estanterías de roble. Los estudiantes acudían cada tarde to consultar enciclopedias y novelas clásicas.",
                 "El arquitecto diseñó un rascacielos innovador con fachada de cristal y sistemas de energía sostenible. Su estructura se elevaba hacia el cielo desafiando las leyes de la gravedad.",
                 "El concertista afinó su violín antes del recital en el auditorio abarrotado. Las notas musicales flotaban en el aire creando una atmósfera mágica para el público expectante.",
                 "Los periodistas investigaban el caso misterioso que tenía intrigadas a las autoridades. Revisaban documentos antiguos y entrevistaban testigos para reconstruir los hechos.",
